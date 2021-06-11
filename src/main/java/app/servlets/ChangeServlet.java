@@ -14,18 +14,13 @@ import java.io.IOException;
 public class ChangeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("ВОШЕЛ В DOGET CHANGE SERVLET");
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/change.jsp");
         requestDispatcher.forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("ВОШЕЛ В DOPOST CHANGE SERVLET");
-
         String id = req.getParameter("id");
-
-
 
         String name = req.getParameter("name");
         System.out.println("name " + name);
