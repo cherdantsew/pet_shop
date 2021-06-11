@@ -1,0 +1,8 @@
+app\servlets\ChangeServlet.class
+app\data_access\JDBCCustomerDAO.class
+app\servlets\DeleteServlet.class
+app\servlets\ProfileServlet.class
+app\entities\Customer.class
+app\servlets\ListServlet.class
+app\data_access\DAO.class
+app\servlets\AddServlet.class
