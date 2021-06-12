@@ -1,8 +1,8 @@
-C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\data_access\DAO.java
 C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\entities\Customer.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\LoginServlet.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\RegistrationServlet.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\service\LoginService.java
 C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\ProfileServlet.java
-C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\AddServlet.java
-C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\ChangeServlet.java
-C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\ListServlet.java
-C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\data_access\JDBCCustomerDAO.java
-C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\DeleteServlet.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\repositories\DAO.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\repositories\CustomerRepository.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\HomePageServlet.java

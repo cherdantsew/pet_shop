@@ -3,10 +3,10 @@ package app.repositories;
 import app.entities.Customer;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CustomerRepository extends DAO {
+public class CustomerRepository extends app.data_access.DAO {
 
     public static final String JDBC_MYSQL_URL = "jdbc:mysql://localhost:3306/javashema?characterEncoding=latin1";
     public static final String ROOT_LOGIN = "root";
@@ -61,7 +61,7 @@ public class CustomerRepository extends DAO {
     }
 
     @Override
-    public Customer getById(int id) {
+    public Object getById(int id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -96,8 +96,8 @@ public class CustomerRepository extends DAO {
     }
 
     @Override
-    public Map<Integer, Customer> getAll() {
-        HashMap customersMap = new HashMap();
+    public List<Customer> getAll() {
+        List<Customer> customersList = new ArrayList();
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -111,13 +111,12 @@ public class CustomerRepository extends DAO {
             ResultSet resultSet = statement.executeQuery(GETALL_URL);
 
             while (resultSet.next()) {
-                customersMap.put(resultSet.getInt("customer_id"),
-                        new Customer(
-                                resultSet.getInt("customer_id"),
-                                resultSet.getString("login"),
-                                resultSet.getString("password"),
-                                resultSet.getString("name"),
-                                resultSet.getInt("age")));
+                customersList.add(new Customer(
+                        resultSet.getInt("customer_id"),
+                        resultSet.getString("login"),
+                        resultSet.getString("password"),
+                        resultSet.getString("name"),
+                        resultSet.getInt("age")));
             }
 
         } catch (SQLException e) {
@@ -125,6 +124,6 @@ public class CustomerRepository extends DAO {
             System.err.println("ERROR WHILE TRYING TO GET ALL USERS");
         }
 
-        return customersMap;
+        return customersList;
     }
 }

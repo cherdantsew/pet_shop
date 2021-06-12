@@ -13,7 +13,7 @@ import java.io.IOException;
 public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/register.jsp").forward(req, resp);
+        req.getRequestDispatcher("/views/register.jsp").forward(req, resp);
     }
 
     @Override
@@ -26,9 +26,10 @@ public class RegistrationServlet extends HttpServlet {
         Customer customer = new Customer(login, password, name, age);
         boolean isAdded = new CustomerRepository().insert(customer);
 
-        if (isAdded)
+        if (isAdded) {
             req.setAttribute("isAdded", isAdded);
+            doGet(req, resp);
+        }
 
-        doGet(req, resp);
     }
 }

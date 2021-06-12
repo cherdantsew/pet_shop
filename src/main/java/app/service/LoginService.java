@@ -1,11 +1,22 @@
 package app.service;
 
+import app.entities.Customer;
 import app.repositories.CustomerRepository;
+
+import java.util.List;
 
 public class LoginService {
 
-    private CustomerRepository customerRepository;
+    private CustomerRepository customerRepository = new CustomerRepository();
 
-    //TODO public boolean dologin
-    //did a few things here
+    public boolean doLogin(String login, String password) {
+        List<Customer> customersList = customerRepository.getAll();
+        for (Customer customer : customersList) {
+            if (customer.getLogin().equals(login) && customer.getPassword().equals(password))
+                return true;
+        }
+        return false;
+    }
+
+
 }

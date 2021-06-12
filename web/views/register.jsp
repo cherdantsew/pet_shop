@@ -17,13 +17,13 @@
 
 <div class="w3-container w3-padding">
     <%
-        if ((boolean) request.getAttribute("isAdded")) {
+        if (request.getAttribute("isAdded") != null && (boolean) request.getAttribute("isAdded")) {
     %>
     <div class="w3-panel w3-green w3-display-container w3-card-4 w3-round">
         <span onclick=this.parentElement.style.display="none" class="w3-button w3-margin-right w3-display-right w3-round-large w3-hover-green w3-border w3-border-green w3-hover-border-grey"></span>
-        <h5>Success! Go buy something</h5>
+        <h5>Success! <a href="/personal/login">Try to log in once again.</a> </h5>
         <div class="w3-container w3-grey w3-opacity w3-right-align w3-padding">
-            <button class="w3-btn w3-round-large" onclick="location.href='/index.html'">Back to main page</button>
+            <button class="w3-btn w3-round-large" onclick="location.href='/personal/login'">Back to main page</button>
         </div>
     </div>
 
