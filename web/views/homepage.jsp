@@ -11,6 +11,17 @@
     <title>Pet Shop home page</title>
 </head>
 <body>
-<h3>here is data for user <%=request.getSession().getAttribute("login")%></h3>
+<%
+    if (request.getSession().getAttribute("logged") != null) {
+%>
+<h3>here is data for user <%=request.getSession().getAttribute("login")%></h3> <% } %>
+
+<%
+    if (request.getSession().getAttribute("logged") == null) {
+%>
+<h3>here is data for guest</h3>
+<h3><a href="/login">Log in</a> to get full access.</h3>
+<% } %>
+
 </body>
 </html>

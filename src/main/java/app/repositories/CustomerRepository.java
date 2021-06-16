@@ -1,12 +1,11 @@
 package app.repositories;
 
 import app.entities.Customer;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerRepository extends app.data_access.DAO {
+public class CustomerRepository extends DAO {
 
     public static final String JDBC_MYSQL_URL = "jdbc:mysql://localhost:3306/javashema?characterEncoding=latin1";
     public static final String ROOT_LOGIN = "root";

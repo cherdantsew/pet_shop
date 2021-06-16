@@ -1,4 +1,4 @@
-package app.data_access;
+package app.repositories;
 
 import java.util.List;
 
