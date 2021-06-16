@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Pet shop login page</title>
+    <title>Kitty land login</title>
 </head>
 <body>
 <div class="w3-container w3-padding">

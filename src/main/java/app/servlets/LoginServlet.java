@@ -1,5 +1,8 @@
 package app.servlets;
 
+import app.entities.Customer;
+import app.repositories.CustomerRepository;
+import app.repositories.ProductCategoryRepository;
 import app.service.LoginService;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,8 +29,10 @@ public class LoginServlet extends HttpServlet {
         boolean success = loginService.doLogin(login, password);
 
         if (success) {
+            Customer customer = (Customer) new CustomerRepository().getByLoginAndPassword(login, password);
             req.getSession().setAttribute("login", login);
             req.getSession().setAttribute("logged", true);
+            req.getSession().setAttribute("customer_id", customer.getId());
             resp.sendRedirect("/homepage");
         } else {
             req.setAttribute("logged", false);

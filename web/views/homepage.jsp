@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Pet Shop home page</title>
+    <title>Pet Shop Kitty land</title>
 </head>
 <body>
 <%

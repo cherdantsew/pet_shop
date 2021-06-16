@@ -80,6 +80,26 @@ public class CustomerRepository extends DAO {
         return null;
     }
 
+    public Object getByLoginAndPassword(String login, String password) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try (Connection connection = DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD)) {
+
+            Statement statement = connection.createStatement();
+            try (ResultSet resultSet = statement.executeQuery("select * from customers where login = " + login + " and password = " + password)) {
+                while (resultSet.next()) {
+                    return new Customer(resultSet.getInt("customer_id"), resultSet.getString("login"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getInt("age"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
     @Override
     public void delete(Object objectToDelete) {
         Customer customerToDelete = (Customer) objectToDelete;
