@@ -1,9 +1,14 @@
 C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\entities\Customer.java
-C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\LoginServlet.java
-C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\RegistrationServlet.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\repositories\ProductCategoryRepository.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\BucketServlet.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\entities\ProductCategory.java
 C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\service\LoginService.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\repositories\BucketRepository.java
 C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\ProfileServlet.java
-C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\repositories\DAO.java
 C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\Filter\LoginFilter.java
 C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\repositories\CustomerRepository.java
 C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\HomePageServlet.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\entities\Products.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\LoginServlet.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\servlets\RegistrationServlet.java
+C:\Users\nvson\IdeaProjects\TODONoteBook\src\main\java\app\repositories\DAO.java

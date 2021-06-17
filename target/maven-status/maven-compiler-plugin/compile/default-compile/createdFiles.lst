@@ -1,9 +1,14 @@
 app\repositories\DAO.class
-app\servlets\HomePageServlet.class
 app\servlets\ProfileServlet.class
-app\entities\Customer.class
 app\repositories\CustomerRepository.class
 app\service\LoginService.class
+app\entities\Products.class
+app\repositories\BucketRepository.class
+app\servlets\RegistrationServlet.class
+app\repositories\ProductCategoryRepository.class
+app\servlets\HomePageServlet.class
+app\servlets\BucketServlet.class
+app\entities\Customer.class
 app\Filter\LoginFilter.class
 app\servlets\LoginServlet.class
-app\servlets\RegistrationServlet.class
+app\entities\ProductCategory.class

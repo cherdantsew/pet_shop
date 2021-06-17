@@ -1,4 +1,6 @@
-<%--
+<%@ page import="java.util.List" %>
+<%@ page import="app.entities.Product" %>
+<%@ page import="app.entities.Product" %><%--
   Created by IntelliJ IDEA.
   User: cherdantsev
   Date: 6/16/2021
@@ -14,6 +16,14 @@
 <h1>Welcome <%=request.getSession().getAttribute("login").equals(null)?"dear guest":request.getSession().getAttribute("login")%></h1> </br>
 <h2>Here is what you have in your bucket:</h2>
 
-
+<%
+    List <Product> bucketProductsList = (List) request.getAttribute("bucket");
+%>
+<ul>
+    <%
+        for (Product products : bucketProductsList)
+            out.println("<li>" + products.toString() + "</li>");
+    %>
+</ul>
 </body>
 </html>
