@@ -1,4 +1,6 @@
-<%--
+<%@ page import="java.util.List" %>
+<%@ page import="app.entities.ProductCategory" %>
+<%@ page import="app.entities.Product" %><%--
   Created by IntelliJ IDEA.
   User: cherdantsev
   Date: 6/12/2021
@@ -29,16 +31,32 @@
 2. SEND CHOSEN CATEGORY BY METHOD POST IN PARAMETER WITH NAME "chosenCategoryName" SO AS TO GET LIST OF ITEMS WITH REQUIRED CATEGORY -->
 
 <form method="post">
-    <p><select name="category">
-        <option disabled>Choose product category</option>
-        <option value="t1" selected>Чебурашка</option>
-        <option value="t2">Крокодил Гена</option>
-        <option value="t3">Шапокляк</option>
-        <option value="t4">Крыса Лариса</option>
+    <p><select name="chosenCategoryName">
+        <%
+            List<ProductCategory> productCategoriesList = (List<ProductCategory>) request.getAttribute("categories");
+            for (ProductCategory category : productCategoriesList) { %>
+        <option value="<%=category.getCategory_name()%>" selected><%=category.getCategory_name()%>
+        </option>
+        <% } %>
     </select></p>
-    <p><input type="submit" value="Отправить"></p>
+    <p><input type="submit" value="Show products"></p>
 </form>
 
+<% if (request.getAttribute("products") != null) {%>
+<form method="post">
+    <ul>
+        <%
+            List<Product> productList = (List<Product>) request.getAttribute("products");
+            for (Product product : productList) { %>
+        <li><%=product.toString()%>
+            <button type="submit" name="chosenProduct" value="<%=product.getProduct_id()%>">Add to cart</button>
+        </li>
+
+
+        <%}%>
+    </ul>
+</form>
+<% } %>
 
 </body>
 </html>
