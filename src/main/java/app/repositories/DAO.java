@@ -1,6 +1,6 @@
-package app.data_access;
+package app.repositories;
 
-import java.util.Map;
+import java.util.List;
 
 public abstract class DAO<T> {
     public abstract boolean insert(T objectToInsert);
@@ -11,5 +11,5 @@ public abstract class DAO<T> {
 
     public abstract void delete(T objectToDelete);
 
-    public abstract Map<T, T> getAll();
+    public abstract List<T> getAll();
 }
