@@ -8,22 +8,17 @@ import java.util.List;
 
 public class BucketRepository extends DAO {
 
-    public static final String JDBC_MYSQL_URL = "jdbc:mysql://localhost:3306/javashema?characterEncoding=latin1";
-    public static final String ROOT_LOGIN = "root";
-    public static final String ROOT_PASSWORD = "root";
 
+    public static final String GET_CUSTOMER_BUCKET_PROCEDURE = "{CALL GetCustomerBucket (?)}";
 
     @Override
     public boolean insert(Object objectToInsert) {
-
-
-
         return false;
     }
 
     @Override
-    public void update(Object objectToUpdate) {
-
+    public boolean update(Object objectToUpdate) {
+        return false;
     }
 
     @Override
@@ -32,8 +27,8 @@ public class BucketRepository extends DAO {
     }
 
     @Override
-    public void delete(Object objectToDelete) {
-
+    public boolean delete(Object objectToDelete) {
+        return false;
     }
 
     @Override
@@ -41,39 +36,35 @@ public class BucketRepository extends DAO {
         return null;
     }
 
-    public List<Product> getBucketByUserId (int user_id) {
+    public List<Product> getBucketByUserId (int user_id) throws SQLException {
 
         List<Product> bucketProductsList = new ArrayList();
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection connection = DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD)) {
+        try (Connection connection = getConnection()) {
 
-            String GetCustomerBucketURL = "{CALL GetCustomerBucket (?)}";
+            String GetCustomerBucketURL = GET_CUSTOMER_BUCKET_PROCEDURE;
 
             CallableStatement callableStatement = connection.prepareCall(GetCustomerBucketURL);
 
             callableStatement.setInt(1, user_id);
             callableStatement.execute();
+
             ResultSet resultSet = callableStatement.getResultSet();
-            while (resultSet.next()) {
-                bucketProductsList.add(new Product(resultSet.getInt("product_id"),
-                        resultSet.getString("product_category_id"),
-                        resultSet.getString("product_name"),
-                        resultSet.getString("product_price"),
-                        resultSet.getString("product_description"))
-                        );
+
+            if (resultSet.next()) {
+                bucketProductsList.add(mapBucket(resultSet));
             }
 
-        } catch (SQLException e) {
-            System.err.println(e);
-            System.err.println("ERROR WHILE TRYING TO GET BUCKET ITEMS FOR USER ID = " + user_id);
         }
-
         return bucketProductsList;
+    }
+
+    private Product mapBucket(ResultSet resultSet) throws SQLException {
+        return new Product(resultSet.getInt("product_id"),
+                resultSet.getString("product_category_id"),
+                resultSet.getString("product_name"),
+                resultSet.getString("product_price"),
+                resultSet.getString("product_description"));
     }
 
 }

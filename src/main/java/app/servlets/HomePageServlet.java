@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 
 @WebServlet("/homepage")
@@ -39,7 +40,11 @@ public class HomePageServlet extends HttpServlet {
             int productId = Integer.parseInt(req.getParameter("chosenProduct"));
             String status = "IN_PROGRESS";
             Order order = new Order(customerId, dateOfOrder, productId, status);
-            orderRepository.insert(order);
+            try {
+                orderRepository.insert(order);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
         doGet(req, resp);
     }

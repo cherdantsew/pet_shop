@@ -1,7 +1,8 @@
 package app.entities;
 
-import java.util.Objects;
+import lombok.Data;
 
+@Data
 public class Customer {
 
 
@@ -26,47 +27,4 @@ public class Customer {
         this.age = age;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", age=" + age +
-                ", name='" + name + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return id == customer.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, password);
-    }
 }
