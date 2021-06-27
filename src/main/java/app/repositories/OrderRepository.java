@@ -1,59 +1,44 @@
 package app.repositories;
 
-import app.entities.Customer;
 import app.entities.Order;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public class OrderRepository extends DAO {
+public class OrderRepository extends DAO<Order> {
 
-    public static final String JDBC_MYSQL_URL = "jdbc:mysql://localhost:3306/javashema?characterEncoding=latin1";
-    public static final String ROOT_LOGIN = "root";
-    public static final String ROOT_PASSWORD = "root";
+    public static final String INSERT_INTO_ORDERS_STATEMENT = "INSERT INTO orders (customer_id, order_date, product_id, status) VALUES (?, sysdate(), ?, ?)";
 
     @Override
-    public boolean insert(Object objectToInsert) {
+    public boolean insert(Order order) throws SQLException {
 
-        Order order = (Order) objectToInsert;
+        try (Connection connection = getConnection()) {
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            PreparedStatement statement = connection.prepareStatement(INSERT_INTO_ORDERS_STATEMENT);
+            statement.setInt(1, order.getCustomer_id());
+            statement.setInt(2, order.getProduct_id());
+            statement.setString(3, order.getStatus());
+
+            return statement.executeUpdate() == 1;
         }
-
-        try (Connection connection = DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD)) {
-
-            Statement statement = connection.createStatement();
-            String INSERT_URL = String.format("INSERT INTO orders (customer_id, order_date, product_id, status)" +
-                            "VALUES (%d, sysdate(), %d, '%s');",
-                    order.getCustomer_id(),
-                    order.getProduct_id(),
-                    order.getStatus());
-            statement.executeUpdate(INSERT_URL);
-            return true;
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return false;    }
-
-    @Override
-    public void update(Object objectToUpdate) {
-
     }
 
     @Override
-    public Object getById(int id) {
+    public boolean update(Order order) {
+        return false;
+    }
+
+    @Override
+    public Order getById(int id) {
         return null;
     }
 
     @Override
-    public void delete(Object objectToDelete) {
-
+    public boolean delete(Order order) {
+        return false;
     }
 
     @Override

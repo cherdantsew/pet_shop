@@ -18,7 +18,7 @@ public class ProductRepository extends DAO {
     }
 
     @Override
-    public void update(Object objectToUpdate) {
+    public boolean update(Object objectToUpdate) {
 
     }
 
@@ -28,7 +28,7 @@ public class ProductRepository extends DAO {
     }
 
     @Override
-    public void delete(Object objectToDelete) {
+    public boolean delete(Object objectToDelete) {
 
     }
 
