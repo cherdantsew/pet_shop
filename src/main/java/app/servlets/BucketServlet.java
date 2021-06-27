@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/bucket")
 public class BucketServlet extends HttpServlet {
@@ -15,7 +16,11 @@ public class BucketServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("bucket", bucketRepository.getBucketByUserId((Integer) req.getSession().getAttribute("customer_id")));
+        try {
+            req.setAttribute("bucket", bucketRepository.getBucketByUserId((Integer) req.getSession().getAttribute("customer_id")));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         req.getRequestDispatcher("views/bucket.jsp").forward(req, resp);
     }
 

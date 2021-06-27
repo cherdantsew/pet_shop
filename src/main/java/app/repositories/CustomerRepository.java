@@ -1,148 +1,114 @@
 package app.repositories;
 
 import app.entities.Customer;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerRepository extends DAO {
+public class CustomerRepository extends DAO<Customer> {
 
-    public static final String JDBC_MYSQL_URL = "jdbc:mysql://localhost:3306/javashema?characterEncoding=latin1";
-    public static final String ROOT_LOGIN = "root";
-    public static final String ROOT_PASSWORD = "root";
+    public static final String INSERT_STATEMENT = "INSERT INTO customers (login, password, name, age) VALUES (?, ?, ?, ?)";
+    public static final String UPDATE_STATEMENT = "UPDATE customers SET login = ?, password = ?, name = ?, age = ? WHERE customer_id = ?";
+    public static final String GET_BY_ID_STATEMENT = "SELECT * FROM customers WHERE customer_id = ?";
+    public static final String SELECT_BY_LOGIN_AND_PASSWORD_STATEMENT = "SELECT * FROM customers WHERE login = ? AND password = ?";
+    public static final String DELETE_CUSTOMER_BY_ID_STATEMENT = "DELETE FROM customers WHERE customer_id = ?";
+    public static final String SELECT_ALL_FROM_CUSTOMERS_STATEMENT = "SELECT * FROM customers";
 
     @Override
-    public boolean insert(Object objectToInsert) {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        Customer customerToInsert = (Customer) objectToInsert;
+    public boolean insert(Customer customer) throws SQLException {
 
-        try (Connection connection = DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD)) {
+        try (Connection connection = getConnection()) {
 
-            Statement statement = connection.createStatement();
-            String INSERT_URL = String.format("INSERT INTO customers (login, password, name, age) VALUES ('%s', '%s', '%s', '%d');",
-                    customerToInsert.getLogin(),
-                    customerToInsert.getPassword(),
-                    customerToInsert.getName(),
-                    customerToInsert.getAge());
-            statement.executeUpdate(INSERT_URL);
-            return true;
-        } catch (SQLException e) {
-            System.out.println(e);
+            PreparedStatement statement = connection.prepareStatement(INSERT_STATEMENT);
+            statement.setString(1, customer.getLogin());
+            statement.setString(2, customer.getPassword());
+            statement.setString(3, customer.getName());
+            statement.setInt(4, customer.getAge());
+            return statement.executeUpdate() == 1;
         }
-        return false;
     }
 
 
     @Override
-    public void update(Object objectToUpdate) {
-        Customer customerToUpdate = (Customer) objectToUpdate;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection connection = DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD)) {
+    public boolean update(Customer customer) throws SQLException {
 
-            Statement statement = connection.createStatement();
-            String INSERT_URL = String.format("UPDATE customers SET login = '%s', password = '%s', name = '%s', age = %d;",
-                    customerToUpdate.getLogin(),
-                    customerToUpdate.getPassword(),
-                    customerToUpdate.getName(),
-                    customerToUpdate.getAge());
-            statement.executeUpdate(INSERT_URL);
-        } catch (SQLException e) {
-            System.out.println(e);
+        try (Connection connection = getConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(UPDATE_STATEMENT);
+
+            statement.setString(1, customer.getLogin());
+            statement.setString(2, customer.getPassword());
+            statement.setString(3, customer.getName());
+            statement.setInt(4, customer.getAge());
+            statement.setInt(5, customer.getId());
+
+            return statement.executeUpdate() == 1;
         }
     }
 
     @Override
-    public Object getById(int id) {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection connection = DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD)) {
+    public Customer getById(int id) throws SQLException {
 
-            Statement statement = connection.createStatement();
-            try (ResultSet resultSet = statement.executeQuery("select * from customers where customer_id = " + id)) {
-                while (resultSet.next()) {
-                    return new Customer(id, resultSet.getString("login"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getInt("age"));
+        try (Connection connection = getConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(GET_BY_ID_STATEMENT);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapCustomer(resultSet);
                 }
             }
-        } catch (SQLException e) {
-            System.out.println(e);
         }
         return null;
     }
 
-    public Object getByLoginAndPassword(String login, String password) {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection connection = DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD)) {
+    private Customer mapCustomer(ResultSet resultSet) throws SQLException {
+        return new Customer(resultSet.getInt("customer_id"), resultSet.getString("login"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getInt("age"));
+    }
 
-            Statement statement = connection.createStatement();
-            try (ResultSet resultSet = statement.executeQuery("select * from customers where login = " + login + " and password = " + password)) {
-                while (resultSet.next()) {
-                    return new Customer(resultSet.getInt("customer_id"), resultSet.getString("login"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getInt("age"));
+    public Customer getByLoginAndPassword(String login, String password) throws SQLException {
+
+        try (Connection connection = getConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(SELECT_BY_LOGIN_AND_PASSWORD_STATEMENT);
+            statement.setString(1, login);
+            statement.setString(2, password);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapCustomer(resultSet);
                 }
             }
-        } catch (SQLException e) {
-            System.out.println(e);
         }
         return null;
     }
 
     @Override
-    public void delete(Object objectToDelete) {
-        Customer customerToDelete = (Customer) objectToDelete;
+    public boolean delete(Customer customer) throws SQLException {
 
-        try (Connection connection = DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD)) {
-            Class.forName("com.mysql.jdbc.Driver");
-            Statement statement = connection.createStatement();
-            String DELETE_URL = ("DELETE FROM customers WHERE customer_id = " + customerToDelete.getId());
-            statement.executeUpdate(DELETE_URL);
-        } catch (ClassNotFoundException | SQLException e) {
-            System.out.println(e);
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(DELETE_CUSTOMER_BY_ID_STATEMENT);
+            statement.setInt(1, customer.getId());
+
+            return statement.executeUpdate() == 1;
         }
     }
 
     @Override
-    public List<Customer> getAll() {
+    public List<Customer> getAll() throws SQLException {
         List<Customer> customersList = new ArrayList();
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection connection = DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD)) {
 
-            Statement statement = connection.createStatement();
-            String GETALL_URL = ("SELECT * FROM customers;");
+        try (Connection connection = getConnection()) {
 
-            ResultSet resultSet = statement.executeQuery(GETALL_URL);
+            PreparedStatement statement = connection.prepareStatement(SELECT_ALL_FROM_CUSTOMERS_STATEMENT);
+
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                customersList.add(new Customer(
-                        resultSet.getInt("customer_id"),
-                        resultSet.getString("login"),
-                        resultSet.getString("password"),
-                        resultSet.getString("name"),
-                        resultSet.getInt("age")));
+                customersList.add(mapCustomer(resultSet));
             }
 
-        } catch (SQLException e) {
-            System.err.println(e);
-            System.err.println("ERROR WHILE TRYING TO GET ALL USERS");
         }
-
         return customersList;
     }
 }
