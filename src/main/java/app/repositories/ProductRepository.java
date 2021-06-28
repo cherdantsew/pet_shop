@@ -1,72 +1,64 @@
 package app.repositories;
 
 import app.entities.Product;
+import app.entities.ProductCategory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductRepository extends DAO {
+public class ProductRepository extends DAO<Product> {
 
-    public static final String JDBC_MYSQL_URL = "jdbc:mysql://localhost:3306/javashema?characterEncoding=latin1";
-    public static final String ROOT_LOGIN = "root";
-    public static final String ROOT_PASSWORD = "root";
+    public static final String GET_PRODUCT_BY_CATEGORY_NAME_STATEMENT = "SELECT * FROM products WHERE product_category_id = (SELECT category_id FROM product_category WHERE category_name = ?)";
 
     @Override
-    public boolean insert(Object objectToInsert) {
+    public boolean insert(Product product) {
         return false;
     }
 
     @Override
-    public boolean update(Object objectToUpdate) {
-
+    public boolean update(Product product) {
+        return false;
     }
 
     @Override
-    public Object getById(int id) {
+    public Product getById(int id) {
         return null;
     }
 
     @Override
-    public boolean delete(Object objectToDelete) {
-
+    public boolean delete(Product product) {
+        return false;
     }
 
     @Override
     public List getAll() {
-       return null;
+        return null;
     }
 
-    public List getByCategoryName(String chosenCategoryName) {
+    public List getByCategoryName(String chosenCategoryName) throws SQLException {
         List<Product> productList = new ArrayList();
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection connection = DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD)) {
+        try (Connection connection = getConnection()) {
 
-            String getProductsURL = "SELECT * FROM products WHERE product_category_id = (SELECT category_id FROM product_category WHERE category_name = '" + chosenCategoryName + "')";
+            PreparedStatement statement = connection.prepareStatement(GET_PRODUCT_BY_CATEGORY_NAME_STATEMENT);
+            statement.setString(1, chosenCategoryName);
 
-            Statement statement = connection.createStatement();
-
-            ResultSet resultSet = statement.executeQuery(getProductsURL);
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                productList.add(new Product(resultSet.getInt("product_id"),
-                        resultSet.getString("product_category_id"),
-                        resultSet.getString("product_name"),
-                        resultSet.getString("product_price"),
-                        resultSet.getString("product_description"))
-                );
+                productList.add(mapProduct(resultSet));
             }
 
-        } catch (SQLException e) {
-            System.err.println(e);
-            System.err.println("ERROR WHILE GETTING ALL PRODUCTS");
         }
-
         return productList;
+    }
+
+    private Product mapProduct(ResultSet resultSet) throws SQLException {
+        return new Product(resultSet.getInt("product_id"),
+                resultSet.getString("product_category_id"),
+                resultSet.getString("product_name"),
+                resultSet.getString("product_price"),
+                resultSet.getString("product_description"));
     }
 }

@@ -1,0 +1,122 @@
+[33mcommit ee02a2c67cf00d22b06b6773eda962d7d32bc44b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: cherdantsew <cherdantsew@gmail.com>
+Date:   Sun Jun 27 13:49:34 2021 +0300
+
+    laptop version in order comment
+
+[33mcommit f8fff32d370c1e15649a59752c5310e6a0301945[m
+Author: cherdantsew <cherdantsew@gmail.com>
+Date:   Sun Jun 27 13:48:40 2021 +0300
+
+    add pom mxl lombok dependency
+
+[33mcommit 42d378e89ddb7ebc67800e838c135af242209411[m
+Merge: d0fbad2 1177971
+Author: cherdantsew <85761120+cherdantsew@users.noreply.github.com>
+Date:   Sun Jun 27 13:37:38 2021 +0300
+
+    Merge pull request #5 from cherdantsew/structure-reorganization
+    
+    Structure reorganization
+
+[33mcommit 1177971f01bf5607e520793d7507de8c83faf609[m[33m ([m[1;31morigin/structure-reorganization[m[33m, [m[1;32mstructure-reorganization[m[33m)[m
+Merge: af2e38c 7131341
+Author: cherdantsew <85761120+cherdantsew@users.noreply.github.com>
+Date:   Sun Jun 27 13:19:42 2021 +0300
+
+    Merge pull request #4 from cherdantsew/cherdantsew-patch-1
+    
+    Add files via upload
+
+[33mcommit 7131341917ee3b9a6770ecae4f1ad4abc14675c3[m[33m ([m[1;31morigin/cherdantsew-patch-1[m[33m)[m
+Author: cherdantsew <85761120+cherdantsew@users.noreply.github.com>
+Date:   Sun Jun 27 13:17:21 2021 +0300
+
+    Add files via upload
+
+[33mcommit d0fbad2c504ddcf79a860644c70f4d96c3b46cdb[m
+Merge: 98a816a af2e38c
+Author: cherdantsew <85761120+cherdantsew@users.noreply.github.com>
+Date:   Sun Jun 27 13:09:18 2021 +0300
+
+    Merge pull request #3 from cherdantsew/structure-reorganization
+    
+    merged what i did finally
+
+[33mcommit af2e38cff90211999118606da447dee0edc35cc2[m
+Author: cherdantsew <85761120+cherdantsew@users.noreply.github.com>
+Date:   Sun Jun 27 12:49:07 2021 +0300
+
+    Add files via upload
+
+[33mcommit 98a816a9fba901405a81c46c6fa48bf6f56dc32b[m
+Merge: 3cd2c1d 995142f
+Author: cherdantsew <85761120+cherdantsew@users.noreply.github.com>
+Date:   Wed Jun 23 09:48:05 2021 +0300
+
+    Merge pull request #2 from cherdantsew/loginservice
+    
+    Loginservice
+
+[33mcommit 995142f68914c2fa0faf8443e5ca9952ed4489da[m[33m ([m[1;31morigin/loginservice[m[33m)[m
+Author: cherdantsew <cherdantsew@gmail.com>
+Date:   Sun Jun 20 10:03:56 2021 +0300
+
+    add functionality to show products according to a chosen category and place an order (order placement wasnt checked).
+
+[33mcommit 3210930bb50c3ddec1b8583a42ddf62338c0eca2[m
+Author: cherdantsew <cherdantsew@gmail.com>
+Date:   Thu Jun 17 16:42:15 2021 +0300
+
+    do a few DAO and complete the shop's main page content
+
+[33mcommit e4201096a1e3d70bfd8df75ed9a817f651137a28[m
+Author: cherdantsew <cherdantsew@gmail.com>
+Date:   Wed Jun 16 16:24:37 2021 +0300
+
+    do preparation for db procedure creation so as to complete personal bucked data
+
+[33mcommit 8395bac50c5de3bcbcfdb161ddb1d8a61cd12468[m
+Author: cherdantsew <cherdantsew@gmail.com>
+Date:   Wed Jun 16 15:40:26 2021 +0300
+
+    reorganize the structure of the shop web pages, do login procedure and login service
+
+[33mcommit 017e84f6f451a3f72ce3ad90102c549ddfd6d6c6[m
+Author: cherdantsew <cherdantsew@gmail.com>
+Date:   Wed Jun 16 15:26:23 2021 +0300
+
+    reorganize the structure of the shop web pages, do login procedure and login service
+
+[33mcommit 55194bbae3ed5e55d4191eb651a6aae4be642acf[m
+Author: cherdantsew <cherdantsew@gmail.com>
+Date:   Sat Jun 12 22:45:39 2021 +0300
+
+    do web filter
+
+[33mcommit 3cd2c1d0ecce8b2fb132e8adea4eca9ea67f6be4[m
+Merge: b3ea39b 9f85580
+Author: cherdantsew <85761120+cherdantsew@users.noreply.github.com>
+Date:   Fri Jun 11 21:47:00 2021 +0300
+
+    Merge pull request #1 from cherdantsew/loginservice
+    
+    pull request
+
+[33mcommit 9f85580fff28f2e74211843c164c192dd50659b6[m
+Author: cherdantsew <cherdantsew@gmail.com>
+Date:   Fri Jun 11 21:31:06 2021 +0300
+
+    correct comment, test git features
+
+[33mcommit b3ea39bc82e74800ab1355a9071b213a14938d59[m
+Author: Владислав Черданцев <cherdantsewva@gmail.com>
+Date:   Fri Jun 11 21:26:19 2021 +0300
+
+    correct comments
+
+[33mcommit c817e7febee661ce4133b84e8513086306dd7247[m
+Author: Владислав Черданцев <cherdantsewva@gmail.com>
+Date:   Fri Jun 11 21:10:58 2021 +0300
+
+    first commit

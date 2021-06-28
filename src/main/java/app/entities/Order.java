@@ -6,15 +6,15 @@ import lombok.Data;
 public class Order {
 //version on laptop
     private int orderId;
-    private int customer_id;
+    private int customerId;
     private String dateOfOrder;
-    private int product_id;
+    private int productId;
     private String status;
 
-    public Order(int customer_id, String dateOfOrder, int product_id, String status) {
-        this.customer_id = customer_id;
+    public Order(int customerId, String dateOfOrder, int productId, String status) {
+        this.customerId = customerId;
         this.dateOfOrder = dateOfOrder;
-        this.product_id = product_id;
+        this.productId = productId;
         this.status = status;
     }
 }

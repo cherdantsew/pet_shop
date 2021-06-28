@@ -6,59 +6,48 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductCategoryRepository extends DAO {
+public class ProductCategoryRepository extends DAO<ProductCategory> {
 
-    public static final String JDBC_MYSQL_URL = "jdbc:mysql://localhost:3306/javashema?characterEncoding=latin1";
-    public static final String ROOT_LOGIN = "root";
-    public static final String ROOT_PASSWORD = "root";
-
+    public static final String GET_ALL_STATEMENT = "SELECT * FROM product_category";
 
     @Override
-    public boolean insert(Object objectToInsert) {
+    public boolean insert(ProductCategory productCategory) {
         return false;
     }
 
     @Override
-    public boolean update(Object objectToUpdate) {
-
+    public boolean update(ProductCategory productCategory) {
+        return false;
     }
 
     @Override
-    public Object getById(int id) {
+    public ProductCategory getById(int id) {
         return null;
     }
 
     @Override
-    public boolean delete(Object objectToDelete) {
-
+    public boolean delete(ProductCategory productCategory) {
+        return false;
     }
 
     @Override
-    public List<ProductCategory> getAll() {
+    public List<ProductCategory> getAll() throws SQLException {
         List<ProductCategory> categoryList = new ArrayList();
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection connection = DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD)) {
 
-            Statement statement = connection.createStatement();
-            String GETALL_URL = ("SELECT * FROM product_category;");
+        try (Connection connection = getConnection()) {
 
-            ResultSet resultSet = statement.executeQuery(GETALL_URL);
+            PreparedStatement statement = connection.prepareStatement(GET_ALL_STATEMENT);
+
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                categoryList.add(new ProductCategory(
-                        resultSet.getInt("category_id"),
-                        resultSet.getString("category_name")));
+                categoryList.add(mapProductCategory(resultSet));
             }
-
-        } catch (SQLException e) {
-            System.err.println(e);
-            System.err.println("ERROR WHILE TRYING TO GET ALL USERS");
         }
-
         return categoryList;
+    }
+
+    private ProductCategory mapProductCategory(ResultSet resultSet) throws SQLException {
+        return new ProductCategory(resultSet.getInt("category_id"), resultSet.getString("category_name"));
     }
 }

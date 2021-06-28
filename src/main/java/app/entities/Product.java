@@ -4,17 +4,17 @@ import lombok.Data;
 
 @Data
 public class Product {
-    private int product_id;
-    private String product_category;
-    private String product_name;
-    private String product_price;
-    private String product_description;
+    private int productId;
+    private String productCategory;
+    private String productName;
+    private String productPrice;
+    private String productDescription;
 
-    public Product(int product_id, String product_category, String product_name, String product_price, String product_description) {
-        this.product_id = product_id;
-        this.product_category = product_category;
-        this.product_name = product_name;
-        this.product_price = product_price;
-        this.product_description = product_description;
+    public Product(int productId, String productCategory, String productName, String productPrice, String productDescription) {
+        this.productId = productId;
+        this.productCategory = productCategory;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productDescription = productDescription;
     }
 }

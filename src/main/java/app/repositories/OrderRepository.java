@@ -5,7 +5,6 @@ import app.entities.Order;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 public class OrderRepository extends DAO<Order> {
@@ -18,8 +17,8 @@ public class OrderRepository extends DAO<Order> {
         try (Connection connection = getConnection()) {
 
             PreparedStatement statement = connection.prepareStatement(INSERT_INTO_ORDERS_STATEMENT);
-            statement.setInt(1, order.getCustomer_id());
-            statement.setInt(2, order.getProduct_id());
+            statement.setInt(1, order.getCustomerId());
+            statement.setInt(2, order.getProductId());
             statement.setString(3, order.getStatus());
 
             return statement.executeUpdate() == 1;

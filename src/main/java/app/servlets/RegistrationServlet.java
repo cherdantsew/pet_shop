@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
@@ -25,7 +26,12 @@ public class RegistrationServlet extends HttpServlet {
         int age = Integer.valueOf(req.getParameter("age"));
 
         Customer customer = new Customer(login, password, name, age);
-        boolean isAdded = new CustomerRepository().insert(customer);
+        boolean isAdded = false;
+        try {
+            isAdded = new CustomerRepository().insert(customer);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         if (isAdded) {
             req.setAttribute("isAdded", isAdded);

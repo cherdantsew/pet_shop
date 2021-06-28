@@ -51,7 +51,7 @@ public class BucketRepository extends DAO {
 
             ResultSet resultSet = callableStatement.getResultSet();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 bucketProductsList.add(mapBucket(resultSet));
             }
 

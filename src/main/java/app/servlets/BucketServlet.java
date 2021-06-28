@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 @WebServlet("/bucket")
 public class BucketServlet extends HttpServlet {
-    private BucketRepository bucketRepository = new BucketRepository();
+    private final BucketRepository bucketRepository = new BucketRepository();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,7 +25,7 @@ public class BucketServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 
     }
 }

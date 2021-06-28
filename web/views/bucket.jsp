@@ -13,7 +13,7 @@
     <title>Bucket</title>
 </head>
 <body>
-<h1>Welcome <%=request.getSession().getAttribute("login").equals(null)?"dear guest":request.getSession().getAttribute("login")%></h1> </br>
+<h1>Welcome, <%=request.getSession().getAttribute("login").equals(null)?"dear guest":request.getSession().getAttribute("login")%></h1> </br>
 <h2>Here is what you have in your bucket:</h2>
 
 <%
@@ -21,9 +21,13 @@
 %>
 <ul>
     <%
-        for (Product products : bucketProductsList)
-            out.println("<li>" + products.toString() + "</li>");
-    %>
+        for (Product products : bucketProductsList){ %>
+    <li>
+        Name: <%=products.getProductName()%> </br>
+        Price: <%=products.getProductPrice()%>
+    </li>
+
+    <% } %>
 </ul>
 </body>
 </html>

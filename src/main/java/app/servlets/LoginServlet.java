@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -29,7 +30,12 @@ public class LoginServlet extends HttpServlet {
         boolean success = loginService.doLogin(login, password);
 
         if (success) {
-            Customer customer = (Customer) new CustomerRepository().getByLoginAndPassword(login, password);
+            Customer customer = null;
+            try {
+                customer = new CustomerRepository().getByLoginAndPassword(login, password);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             req.getSession().setAttribute("login", login);
             req.getSession().setAttribute("logged", true);
             req.getSession().setAttribute("customer_id", customer.getId());

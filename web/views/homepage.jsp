@@ -1,6 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="app.entities.ProductCategory" %>
-<%@ page import="app.entities.Product" %><%--
+<%@ page import="app.entities.Product" %>
+<%@ page import="app.repositories.ProductRepository" %><%--
   Created by IntelliJ IDEA.
   User: cherdantsev
   Date: 6/12/2021
@@ -22,40 +23,48 @@
 
 <h3><a href="/login">Log in</a> to get full access.</h3> <% } %>
 
-<%
-
-%>
-
-<!-- //TODO
-1. LIST OF CATEGORIES IS SENT WITH ATTRIBUTE NAME "categories"
-2. SEND CHOSEN CATEGORY BY METHOD POST IN PARAMETER WITH NAME "chosenCategoryName" SO AS TO GET LIST OF ITEMS WITH REQUIRED CATEGORY -->
+<% List<ProductCategory> productCategoriesList = (List<ProductCategory>) request.getSession().getAttribute("categories"); %>
 
 <form method="post">
-    <p><select name="chosenCategoryName">
-        <%
-            List<ProductCategory> productCategoriesList = (List<ProductCategory>) request.getAttribute("categories");
-            for (ProductCategory category : productCategoriesList) { %>
-        <option value="<%=category.getCategory_name()%>" selected><%=category.getCategory_name()%>
-        </option>
-        <% } %>
-    </select></p>
-    <p><input type="submit" value="Show products"></p>
+
+    <% for (ProductCategory productCategory : productCategoriesList) { %>
+    <button type="submit" name="chosenCategoryName"
+            value="<%=productCategory.getCategoryName()%>"><%=productCategory.getCategoryName()%>
+    </button>
+    <% } %>
+
 </form>
 
-<% if (request.getAttribute("products") != null) {%>
+<% if (request.getSession().getAttribute("products") != null) {%>
 <form method="post">
     <ul>
         <%
-            List<Product> productList = (List<Product>) request.getAttribute("products");
+            List<Product> productList = (List<Product>) request.getSession().getAttribute("products");
             for (Product product : productList) { %>
-        <li><%=product.toString()%>
-            <button type="submit" name="chosenProduct" value="<%=product.getProduct_id()%>">Add to cart</button>
+        <li>Name: <%=product.getProductName()%> </br>
+            Price: <%=product.getProductPrice()%> </br>
+            Description: <%=product.getProductDescription()%>
+            <% if (request.getSession().getAttribute("logged") != null && (boolean) request.getSession().getAttribute("logged")) { %>
+            <button type="submit" name="chosenProduct" value="<%=product.getProductId()%>">Add to cart</button>
+
+            <% } %>
         </li>
 
 
         <%}%>
     </ul>
 </form>
+<% } %>
+
+<% if (request.getAttribute("addedToBucket") != null && (boolean) request.getAttribute("addedToBucket")){ %>
+<section id="successMessage">
+    <div>
+        <h2>Успешно!</h2>
+    </div>
+</section>
+<script type="text/javascript" charset="utf-8">
+    setTimeout(() => successMessage.hidden = true, 2000)
+</script>
 <% } %>
 
 </body>
