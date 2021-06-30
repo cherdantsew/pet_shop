@@ -13,7 +13,9 @@
     <title>Bucket</title>
 </head>
 <body>
-<h1>Welcome, <%=request.getSession().getAttribute("login").equals(null)?"dear guest":request.getSession().getAttribute("login")%></h1> </br>
+<h1>Welcome, <%=request.getSession().getAttribute("login") == null ?"dear guest":request.getSession().getAttribute("login")%></h1> </br>
+<h3>Go back to <a href="${pageContext.request.contextPath}/homepage">homepage.</a></h3>
+
 <h2>Here is what you have in your bucket:</h2>
 
 <%

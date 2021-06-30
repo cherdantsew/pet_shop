@@ -17,11 +17,11 @@
 <%
     if (request.getSession().getAttribute("logged") != null) {
 %>
-<h3>Go to <a href="/bucket">bucket.</a></h3>
+<h3>Go to <a href="${pageContext.request.contextPath}/bucket">bucket.</a></h3>
 
 <% } else {%>
 
-<h3><a href="/login">Log in</a> to get full access.</h3> <% } %>
+<h3><a href="${pageContext.request.contextPath}/login">Log in</a> to get full access.</h3> <% } %>
 
 <% List<ProductCategory> productCategoriesList = (List<ProductCategory>) request.getSession().getAttribute("categories"); %>
 
