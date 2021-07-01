@@ -7,6 +7,7 @@ app\servlets\RegistrationServlet.class
 app\repositories\OrderRepository.class
 app\repositories\ProductCategoryRepository.class
 app\entities\Order.class
+app\exceptions\CustomerNotFountException.class
 app\servlets\HomePageServlet.class
 app\servlets\BucketServlet.class
 app\entities\Customer.class

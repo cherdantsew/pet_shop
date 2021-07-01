@@ -10,6 +10,7 @@ C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\repositories\ProductCateg
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\servlets\BucketServlet.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\servlets\ProfileServlet.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\servlets\RegistrationServlet.java
+C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\exceptions\CustomerNotFountException.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\repositories\ProductRepository.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\exceptions\ConnectionInitializationException.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\service\LoginService.java

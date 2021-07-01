@@ -8,7 +8,6 @@ import java.util.List;
 
 public class BucketRepository extends DAO {
 
-
     public static final String GET_CUSTOMER_BUCKET_PROCEDURE = "{CALL GetCustomerBucket (?)}";
 
     @Override
@@ -37,24 +36,16 @@ public class BucketRepository extends DAO {
     }
 
     public List<Product> getBucketByUserId (int user_id) throws SQLException {
-
         List<Product> bucketProductsList = new ArrayList();
-
         try (Connection connection = getConnection()) {
-
             String GetCustomerBucketURL = GET_CUSTOMER_BUCKET_PROCEDURE;
-
             CallableStatement callableStatement = connection.prepareCall(GetCustomerBucketURL);
-
             callableStatement.setInt(1, user_id);
             callableStatement.execute();
-
             ResultSet resultSet = callableStatement.getResultSet();
-
             while (resultSet.next()) {
                 bucketProductsList.add(mapBucket(resultSet));
             }
-
         }
         return bucketProductsList;
     }

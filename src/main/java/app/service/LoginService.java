@@ -10,28 +10,22 @@ import java.util.logging.Logger;
 
 public class LoginService {
 
-    private CustomerRepository customerRepository = new CustomerRepository();
+    private final Logger logger = Logger.getLogger(LoginService.class.getName());
+    private final CustomerRepository customerRepository = new CustomerRepository();
 
     public Customer doLogin(String login, String password) {
         try {
             List<Customer> customersList = customerRepository.getAll();
-
-            Customer customer = findUserByLogin(customersList, login);
-            if (customer != null && password.equals(customer.getPassword())) {
-                return customer;
+            for (Customer customer : customersList) {
+                if (login.equals(customer.getLogin())) {
+                    if (password.equals(customer.getPassword()))
+                        return customer;
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning(e.getMessage());
         }
-        throw new CustomerNotFountException(new RuntimeException());
+        logger.warning(String.format("User wasnt found. Credentials: login:%s, password: %s", login, password));
+        throw new CustomerNotFountException(login, password);
     }
-
-    private Customer findUserByLogin(List<Customer> customerList, String login) {
-        for (Customer customer : customerList) {
-            if (login.equals(customer.getLogin()))
-                return customer;
-        }
-        return null;
-    }
-
 }

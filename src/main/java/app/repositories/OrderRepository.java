@@ -13,14 +13,11 @@ public class OrderRepository extends DAO<Order> {
 
     @Override
     public boolean insert(Order order) throws SQLException {
-
         try (Connection connection = getConnection()) {
-
             PreparedStatement statement = connection.prepareStatement(INSERT_INTO_ORDERS_STATEMENT);
             statement.setInt(1, order.getCustomerId());
             statement.setInt(2, order.getProductId());
             statement.setString(3, order.getStatus());
-
             return statement.executeUpdate() == 1;
         }
     }

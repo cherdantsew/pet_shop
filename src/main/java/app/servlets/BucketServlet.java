@@ -18,8 +18,8 @@ public class BucketServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             req.setAttribute("bucket", bucketRepository.getBucketByUserId((Integer) req.getSession().getAttribute("customer_id")));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         req.getRequestDispatcher("views/bucket.jsp").forward(req, resp);
     }

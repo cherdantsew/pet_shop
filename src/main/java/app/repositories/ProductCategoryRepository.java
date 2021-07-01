@@ -33,13 +33,9 @@ public class ProductCategoryRepository extends DAO<ProductCategory> {
     @Override
     public List<ProductCategory> getAll() throws SQLException {
         List<ProductCategory> categoryList = new ArrayList();
-
         try (Connection connection = getConnection()) {
-
             PreparedStatement statement = connection.prepareStatement(GET_ALL_STATEMENT);
-
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()) {
                 categoryList.add(mapProductCategory(resultSet));
             }

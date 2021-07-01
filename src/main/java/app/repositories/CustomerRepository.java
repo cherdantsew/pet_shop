@@ -17,9 +17,7 @@ public class CustomerRepository extends DAO<Customer> {
 
     @Override
     public boolean insert(Customer customer) throws SQLException {
-
         try (Connection connection = getConnection()) {
-
             PreparedStatement statement = connection.prepareStatement(INSERT_STATEMENT);
             statement.setString(1, customer.getLogin());
             statement.setString(2, customer.getPassword());
@@ -32,28 +30,21 @@ public class CustomerRepository extends DAO<Customer> {
 
     @Override
     public boolean update(Customer customer) throws SQLException {
-
         try (Connection connection = getConnection()) {
-
             PreparedStatement statement = connection.prepareStatement(UPDATE_STATEMENT);
-
             statement.setString(1, customer.getLogin());
             statement.setString(2, customer.getPassword());
             statement.setString(3, customer.getName());
             statement.setInt(4, customer.getAge());
             statement.setInt(5, customer.getId());
-
             return statement.executeUpdate() == 1;
         }
     }
 
     @Override
     public Customer getById(int id) throws SQLException {
-
         try (Connection connection = getConnection()) {
-
             PreparedStatement statement = connection.prepareStatement(GET_BY_ID_STATEMENT);
-
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapCustomer(resultSet);
@@ -68,9 +59,7 @@ public class CustomerRepository extends DAO<Customer> {
     }
 
     public Customer getByLoginAndPassword(String login, String password) throws SQLException {
-
         try (Connection connection = getConnection()) {
-
             PreparedStatement statement = connection.prepareStatement(SELECT_BY_LOGIN_AND_PASSWORD_STATEMENT);
             statement.setString(1, login);
             statement.setString(2, password);
@@ -85,11 +74,9 @@ public class CustomerRepository extends DAO<Customer> {
 
     @Override
     public boolean delete(Customer customer) throws SQLException {
-
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(DELETE_CUSTOMER_BY_ID_STATEMENT);
             statement.setInt(1, customer.getId());
-
             return statement.executeUpdate() == 1;
         }
     }
@@ -97,17 +84,12 @@ public class CustomerRepository extends DAO<Customer> {
     @Override
     public List<Customer> getAll() throws SQLException {
         List<Customer> customersList = new ArrayList();
-
         try (Connection connection = getConnection()) {
-
             PreparedStatement statement = connection.prepareStatement(SELECT_ALL_FROM_CUSTOMERS_STATEMENT);
-
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()) {
                 customersList.add(mapCustomer(resultSet));
             }
-
         }
         return customersList;
     }

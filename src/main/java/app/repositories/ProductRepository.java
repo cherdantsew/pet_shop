@@ -38,18 +38,13 @@ public class ProductRepository extends DAO<Product> {
 
     public List getByCategoryName(String chosenCategoryName) throws SQLException {
         List<Product> productList = new ArrayList();
-
         try (Connection connection = getConnection()) {
-
             PreparedStatement statement = connection.prepareStatement(GET_PRODUCT_BY_CATEGORY_NAME_STATEMENT);
             statement.setString(1, chosenCategoryName);
-
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()) {
                 productList.add(mapProduct(resultSet));
             }
-
         }
         return productList;
     }
