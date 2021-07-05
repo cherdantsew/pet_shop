@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("/bucket")
+@WebFilter("/customer/*")
 public class LoginFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -20,7 +20,7 @@ public class LoginFilter implements Filter {
         Object logged = httpServletRequest.getSession().getAttribute("logged");
         if (logged == null || !(boolean) logged){
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-            httpServletResponse.sendRedirect("/login");
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login");
         } else {
             chain.doFilter(request, response);
         }

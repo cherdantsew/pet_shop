@@ -1,6 +1,7 @@
-package app.servlets;
+package app.servlets.customer;
 
 import app.repositories.BucketRepository;
+import app.servlets.LoginServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@WebServlet("/bucket")
+@WebServlet("/customer/bucket")
 public class BucketServlet extends HttpServlet {
     private final BucketRepository bucketRepository = new BucketRepository();
     private final Logger logger = Logger.getLogger(LoginServlet.class.getName());
@@ -24,7 +25,7 @@ public class BucketServlet extends HttpServlet {
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Error while trying to get bucket items", e);
         }
-        req.getRequestDispatcher("views/bucket.jsp").forward(req, resp);
+        req.getRequestDispatcher("views/customer/bucket.jsp").forward(req, resp);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package app.servlets;
+package app.servlets.customer;
 
 import app.entities.Order;
 import app.repositories.OrderRepository;
@@ -13,9 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@WebServlet("/homepage")
+@WebServlet("/customer/homepage")
 public class HomePageServlet extends HttpServlet {
 
     private final ProductCategoryRepository productCategoryRepository = new ProductCategoryRepository();
@@ -30,7 +31,7 @@ public class HomePageServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        req.getRequestDispatcher("views/homepage.jsp").forward(req, resp);
+        req.getRequestDispatcher("/homepage.jsp").forward(req, resp);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class HomePageServlet extends HttpServlet {
                 req.getSession().setAttribute("products", productRepository.getByCategoryName((req.getParameter("chosenCategoryName"))));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Error while getting list of products corresponding to a specific Category.", e);
         }
 
         if (req.getParameter("chosenProduct") != null && req.getSession().getAttribute("logged") != null) {
@@ -55,8 +56,8 @@ public class HomePageServlet extends HttpServlet {
                 if (inserted) {
                     req.setAttribute("addedToBucket", true);
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } catch (SQLException e) {
+                logger.log(Level.WARNING, "Error while adding a product to orders table", e);
             }
         }
         doGet(req, resp);

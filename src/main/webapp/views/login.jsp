@@ -27,7 +27,7 @@
         <div class="w3-container w3-center w3-green">
             <h2>Log in</h2>
         </div>
-        <form method="post" class="w3-selection w3-light-grey w3-padding">
+        <form method="post" action="${pageContext.request.contextPath}/login" class="w3-selection w3-light-grey w3-padding">
             <label>Login:<input type="text" name="login" class="w3-input w3-animate-input w3-border w3-round-large"
                                 style="width: 30%"><br/>
             </label>
@@ -39,7 +39,5 @@
         </form>
     </div>
 </div>
-
-<h4>Back to <a href="${pageContext.request.contextPath}/homepage">homepage</a></h4>
 </body>
 </html>

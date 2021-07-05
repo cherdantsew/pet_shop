@@ -1,15 +1,15 @@
 app\repositories\DAO.class
+app\servlets\customer\HomePageServlet.class
 app\servlets\ProfileServlet.class
 app\repositories\CustomerRepository.class
 app\service\LoginService.class
 app\repositories\BucketRepository.class
+app\servlets\customer\BucketServlet.class
 app\servlets\RegistrationServlet.class
 app\repositories\OrderRepository.class
 app\repositories\ProductCategoryRepository.class
 app\entities\Order.class
 app\exceptions\CustomerNotFountException.class
-app\servlets\HomePageServlet.class
-app\servlets\BucketServlet.class
 app\entities\Customer.class
 app\entities\Product.class
 app\Filter\LoginFilter.class

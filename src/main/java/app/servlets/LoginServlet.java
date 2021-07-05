@@ -30,8 +30,9 @@ public class LoginServlet extends HttpServlet {
         if (customer != null) {
             req.getSession().setAttribute("login", login);
             req.getSession().setAttribute("logged", true);
+            req.getSession().setAttribute("customer", customer);
             req.getSession().setAttribute("customer_id", customer.getId());
-            resp.sendRedirect(req.getContextPath() +"/homepage");
+            resp.sendRedirect(req.getContextPath() +"/customer/homepage");
         } else {
             req.setAttribute("logged", false);
             doGet(req, resp);
