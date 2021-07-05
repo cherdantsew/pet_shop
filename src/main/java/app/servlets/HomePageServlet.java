@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Logger;
 
 @WebServlet("/homepage")
 public class HomePageServlet extends HttpServlet {
@@ -20,6 +21,7 @@ public class HomePageServlet extends HttpServlet {
     private final ProductCategoryRepository productCategoryRepository = new ProductCategoryRepository();
     private final ProductRepository productRepository = new ProductRepository();
     private final OrderRepository orderRepository = new OrderRepository();
+    private final Logger logger = Logger.getLogger(HomePageServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

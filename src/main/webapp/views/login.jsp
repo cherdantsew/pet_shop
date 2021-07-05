@@ -40,6 +40,6 @@
     </div>
 </div>
 
-<h4>Back to <a href="/homepage">homepage</a></h4>
+<h4>Back to <a href="${pageContext.request.contextPath}/homepage">homepage</a></h4>
 </body>
 </html>

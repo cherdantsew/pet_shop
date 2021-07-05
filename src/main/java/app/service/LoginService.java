@@ -25,7 +25,7 @@ public class LoginService {
         } catch (SQLException e) {
             logger.warning(e.getMessage());
         }
-        logger.warning(String.format("User wasnt found. Credentials: login:%s, password: %s", login, password));
+        logger.warning(String.format("User wasn't found. Credentials: login:%s, password: %s", login, password));
         throw new CustomerNotFountException(login, password);
     }
 }

@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class Order {
-//version on laptop
     private int orderId;
     private int customerId;
     private String dateOfOrder;

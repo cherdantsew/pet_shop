@@ -24,12 +24,9 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-
         Customer customer = loginService.doLogin(login, password);
-
         if (customer != null) {
             req.getSession().setAttribute("login", login);
             req.getSession().setAttribute("logged", true);
@@ -39,6 +36,5 @@ public class LoginServlet extends HttpServlet {
             req.setAttribute("logged", false);
             doGet(req, resp);
         }
-
     }
 }
