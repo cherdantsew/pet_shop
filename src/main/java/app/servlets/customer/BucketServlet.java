@@ -1,5 +1,6 @@
 package app.servlets.customer;
 
+import app.dto.CustomerDTO;
 import app.repositories.BucketRepository;
 import app.servlets.LoginServlet;
 
@@ -21,11 +22,12 @@ public class BucketServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.setAttribute("bucket", bucketRepository.getBucketByUserId((Integer) req.getSession().getAttribute("customer_id")));
+            CustomerDTO customerDTO = (CustomerDTO) req.getSession().getAttribute("customer");
+            req.getSession().setAttribute("bucket", bucketRepository.getBucketByUserId(customerDTO.getId()       ));
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Error while trying to get bucket items", e);
         }
-        req.getRequestDispatcher("views/customer/bucket.jsp").forward(req, resp);
+        req.getRequestDispatcher("/customer/bucket.jsp").forward(req, resp);
     }
 
     @Override

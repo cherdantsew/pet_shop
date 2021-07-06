@@ -1,10 +1,12 @@
 package app.servlets.customer;
 
+import app.dto.CustomerDTO;
 import app.entities.Order;
 import app.repositories.OrderRepository;
 import app.repositories.ProductCategoryRepository;
 import app.repositories.ProductRepository;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +33,8 @@ public class HomePageServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        req.getRequestDispatcher("/homepage.jsp").forward(req, resp);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/customer/homepage.jsp");
+        requestDispatcher.forward(req, resp);
     }
 
     @Override
@@ -44,13 +47,8 @@ public class HomePageServlet extends HttpServlet {
             logger.log(Level.WARNING, "Error while getting list of products corresponding to a specific Category.", e);
         }
 
-        if (req.getParameter("chosenProduct") != null && req.getSession().getAttribute("logged") != null) {
-            int customerId = (int) req.getSession().getAttribute("customer_id");
-            Date date = new Date();
-            String dateOfOrder = date.toString();
-            int productId = Integer.parseInt(req.getParameter("chosenProduct"));
-            String status = "IN_PROGRESS";
-            Order order = new Order(customerId, dateOfOrder, productId, status);
+        if (req.getParameter("chosenProduct") != null) {
+            Order order = createOrder(req);
             try {
                 boolean inserted = orderRepository.insert(order);
                 if (inserted) {
@@ -61,5 +59,15 @@ public class HomePageServlet extends HttpServlet {
             }
         }
         doGet(req, resp);
+    }
+
+    private Order createOrder(HttpServletRequest req) {
+        CustomerDTO customerDTO = (CustomerDTO) req.getSession().getAttribute("customer");
+        int customerId = customerDTO.getId();
+        Date date = new Date();
+        String dateOfOrder = date.toString();
+        int productId = Integer.parseInt(req.getParameter("chosenProduct"));
+        String status = "IN_PROGRESS";
+        return new Order(customerId, dateOfOrder, productId, status);
     }
 }

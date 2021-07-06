@@ -19,26 +19,28 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("views/register.jsp").forward(req, resp);
+        req.getRequestDispatcher("/register.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Customer customer = getCustomer(req);
+        try {
+            boolean isAdded = new CustomerRepository().insert(customer);
+            if (isAdded) {
+                req.setAttribute("isAdded", true);
+                doGet(req, resp);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Error while trying to insert a new customer into database", e);
+        }
+    }
+
+    private Customer getCustomer(HttpServletRequest req) {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String name = req.getParameter("name");
         int age = Integer.parseInt(req.getParameter("age"));
-        Customer customer = new Customer(login, password, name, age);
-        boolean isAdded = false;
-        try {
-            isAdded = new CustomerRepository().insert(customer);
-        } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error while trying to insert a new customer into database", e);
-        }
-        if (isAdded) {
-            req.setAttribute("isAdded", true);
-            doGet(req, resp);
-        }
-
+        return new Customer(login, password, name, age);
     }
 }

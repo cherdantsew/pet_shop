@@ -14,6 +14,7 @@ public class CustomerRepository extends DAO<Customer> {
     public static final String SELECT_BY_LOGIN_AND_PASSWORD_STATEMENT = "SELECT * FROM customers WHERE login = ? AND password = ?";
     public static final String DELETE_CUSTOMER_BY_ID_STATEMENT = "DELETE FROM customers WHERE customer_id = ?";
     public static final String SELECT_ALL_FROM_CUSTOMERS_STATEMENT = "SELECT * FROM customers";
+    private static final String SELECT_BY_LOGIN_STATEMENT = "SELECT * FROM customers WHERE login = ?";
 
     @Override
     public boolean insert(Customer customer) throws SQLException {
@@ -54,10 +55,6 @@ public class CustomerRepository extends DAO<Customer> {
         return null;
     }
 
-    private Customer mapCustomer(ResultSet resultSet) throws SQLException {
-        return new Customer(resultSet.getInt("customer_id"), resultSet.getString("login"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getInt("age"));
-    }
-
     public Customer getByLoginAndPassword(String login, String password) throws SQLException {
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(SELECT_BY_LOGIN_AND_PASSWORD_STATEMENT);
@@ -92,5 +89,22 @@ public class CustomerRepository extends DAO<Customer> {
             }
         }
         return customersList;
+    }
+
+    public Customer getByLogin(String login) throws SQLException{
+        Customer customer = null;
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(SELECT_BY_LOGIN_STATEMENT);
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                return mapCustomer(resultSet);
+            }
+        }
+        return null;
+    }
+
+    private Customer mapCustomer(ResultSet resultSet) throws SQLException {
+        return new Customer(resultSet.getInt("customer_id"), resultSet.getString("login"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getInt("age"));
     }
 }

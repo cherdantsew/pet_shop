@@ -3,6 +3,7 @@ C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\repositories\BucketReposi
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\repositories\CustomerRepository.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\servlets\customer\HomePageServlet.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\entities\Product.java
+C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\dto\CustomerDTO.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\entities\ProductCategory.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\repositories\OrderRepository.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\servlets\LoginServlet.java
@@ -13,6 +14,7 @@ C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\exceptions\CustomerNotFou
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\repositories\ProductRepository.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\servlets\customer\BucketServlet.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\exceptions\ConnectionInitializationException.java
+C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\converters\CustomerConverter.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\service\LoginService.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\entities\Customer.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\entities\Order.java

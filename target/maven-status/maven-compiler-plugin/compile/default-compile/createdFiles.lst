@@ -1,9 +1,11 @@
+app\dto\CustomerDTO.class
 app\repositories\DAO.class
 app\servlets\customer\HomePageServlet.class
 app\servlets\ProfileServlet.class
 app\repositories\CustomerRepository.class
 app\service\LoginService.class
 app\repositories\BucketRepository.class
+app\dto\CustomerDTO$CustomerDTOBuilder.class
 app\servlets\customer\BucketServlet.class
 app\servlets\RegistrationServlet.class
 app\repositories\OrderRepository.class
@@ -11,6 +13,7 @@ app\repositories\ProductCategoryRepository.class
 app\entities\Order.class
 app\exceptions\CustomerNotFountException.class
 app\entities\Customer.class
+app\converters\CustomerConverter.class
 app\entities\Product.class
 app\Filter\LoginFilter.class
 app\exceptions\ConnectionInitializationException.class
