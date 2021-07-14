@@ -9,6 +9,8 @@ import java.util.List;
 public class ProductCategoryRepository extends DAO<ProductCategory> {
 
     public static final String GET_ALL_STATEMENT = "SELECT * FROM product_category";
+    Connection connection = getConnection();
+    TransactionHandler transactionHandler = new TransactionHandler();
 
     @Override
     public boolean insert(ProductCategory productCategory) {
@@ -32,13 +34,11 @@ public class ProductCategoryRepository extends DAO<ProductCategory> {
 
     @Override
     public List<ProductCategory> getAll() throws SQLException {
-        List<ProductCategory> categoryList = new ArrayList();
-        try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_ALL_STATEMENT);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                categoryList.add(mapProductCategory(resultSet));
-            }
+        List<ProductCategory> categoryList = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_STATEMENT);
+        ResultSet resultSet = transactionHandler.handleQueryTransaction(preparedStatement, connection);
+        while (resultSet.next()) {
+            categoryList.add(mapProductCategory(resultSet));
         }
         return categoryList;
     }

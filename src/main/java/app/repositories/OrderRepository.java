@@ -10,16 +10,17 @@ import java.util.List;
 public class OrderRepository extends DAO<Order> {
 
     public static final String INSERT_INTO_ORDERS_STATEMENT = "INSERT INTO orders (customer_id, order_date, product_id, status) VALUES (?, sysdate(), ?, ?)";
+    Connection connection = getConnection();
+    TransactionHandler transactionHandler = new TransactionHandler();
 
     @Override
     public boolean insert(Order order) throws SQLException {
-        try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(INSERT_INTO_ORDERS_STATEMENT);
-            statement.setInt(1, order.getCustomerId());
-            statement.setInt(2, order.getProductId());
-            statement.setString(3, order.getStatus());
-            return statement.executeUpdate() == 1;
-        }
+        PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO_ORDERS_STATEMENT);
+        preparedStatement.setInt(1, order.getCustomerId());
+        preparedStatement.setInt(2, order.getProductId());
+        preparedStatement.setString(3, order.getStatus());
+        return transactionHandler.handleUpdateTransaction(preparedStatement, connection) == 1;
+
     }
 
     @Override

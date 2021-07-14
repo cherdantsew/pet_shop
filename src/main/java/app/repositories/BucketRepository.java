@@ -10,6 +10,9 @@ public class BucketRepository extends DAO {
 
     public static final String GET_CUSTOMER_BUCKET_PROCEDURE = "{CALL GetCustomerBucket (?)}";
 
+    Connection connection = getConnection();
+    TransactionHandler transactionHandler = new TransactionHandler();
+
     @Override
     public boolean insert(Object objectToInsert) {
         return false;
@@ -35,17 +38,13 @@ public class BucketRepository extends DAO {
         return null;
     }
 
-    public List<Product> getBucketByUserId (int user_id) throws SQLException {
-        List<Product> bucketProductsList = new ArrayList();
-        try (Connection connection = getConnection()) {
-            String GetCustomerBucketURL = GET_CUSTOMER_BUCKET_PROCEDURE;
-            CallableStatement callableStatement = connection.prepareCall(GetCustomerBucketURL);
-            callableStatement.setInt(1, user_id);
-            callableStatement.execute();
-            ResultSet resultSet = callableStatement.getResultSet();
-            while (resultSet.next()) {
-                bucketProductsList.add(mapBucket(resultSet));
-            }
+    public List<Product> getBucketByUserId(int user_id) throws SQLException {
+        List<Product> bucketProductsList = new ArrayList<>();
+        CallableStatement callableStatement = connection.prepareCall(GET_CUSTOMER_BUCKET_PROCEDURE);
+        callableStatement.setInt(1, user_id);
+        ResultSet resultSet = transactionHandler.handleQueryTransaction(callableStatement, connection);
+        while (resultSet.next()) {
+            bucketProductsList.add(mapBucket(resultSet));
         }
         return bucketProductsList;
     }

@@ -1,17 +1,15 @@
 package app.repositories;
 
 import app.exceptions.ConnectionInitializationException;
-
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
 public abstract class DAO<T> {
-    public static final String JDBC_MYSQL_URL = "jdbc:mysql://localhost:3306/javashema?characterEncoding=latin1";
-    public static final String ROOT_LOGIN = "root";
-    public static final String ROOT_PASSWORD = "root";
-
     public abstract boolean insert(T objectToInsert) throws SQLException;
 
     public abstract boolean update(T objectToUpdate) throws SQLException;
@@ -24,9 +22,11 @@ public abstract class DAO<T> {
 
     protected Connection getConnection() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            return DriverManager.getConnection(JDBC_MYSQL_URL, ROOT_LOGIN, ROOT_PASSWORD);
-        } catch (ClassNotFoundException | SQLException e) {
+            Context initContext = new InitialContext();
+            Context envContext = (Context) initContext.lookup("java:comp/env");
+            DataSource dataSource = (DataSource) envContext.lookup("jdbc/javashema");
+            return dataSource.getConnection();
+        } catch (SQLException | NamingException e) {
             throw new ConnectionInitializationException(e);
         }
     }

@@ -24,6 +24,7 @@ public class HomePageServlet extends HttpServlet {
     private final ProductCategoryRepository productCategoryRepository = new ProductCategoryRepository();
     private final ProductRepository productRepository = new ProductRepository();
     private final OrderRepository orderRepository = new OrderRepository();
+
     private final Logger logger = Logger.getLogger(HomePageServlet.class.getName());
 
     @Override

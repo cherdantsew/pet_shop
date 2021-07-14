@@ -8,6 +8,7 @@ C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\entities\ProductCategory.
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\repositories\OrderRepository.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\servlets\LoginServlet.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\repositories\ProductCategoryRepository.java
+C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\servlets\customer\LogoutServlet.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\servlets\ProfileServlet.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\servlets\RegistrationServlet.java
 C:\Users\nvson\IdeaProjects\pet_shop\src\main\java\app\exceptions\CustomerNotFountException.java

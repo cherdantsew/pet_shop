@@ -5,6 +5,7 @@ app\servlets\ProfileServlet.class
 app\repositories\CustomerRepository.class
 app\service\LoginService.class
 app\repositories\BucketRepository.class
+app\servlets\customer\LogoutServlet.class
 app\dto\CustomerDTO$CustomerDTOBuilder.class
 app\servlets\customer\BucketServlet.class
 app\servlets\RegistrationServlet.class
