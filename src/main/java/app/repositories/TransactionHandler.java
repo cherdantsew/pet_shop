@@ -1,33 +1,24 @@
 package app.repositories;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TransactionHandler {
+public class TransactionHandler<T>{
+    Connection connection;
+    TransactionHandlerInterface<T> transactionHandlerInterface;
 
-    public long handleUpdateTransaction(PreparedStatement preparedStatement, Connection connection) throws SQLException {
-        try {
-            connection.setAutoCommit(false);
-            preparedStatement.executeUpdate();
-            connection.commit();
-            return preparedStatement.getUpdateCount();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            connection.rollback();
-        }
-        return preparedStatement.getUpdateCount();
+    public TransactionHandler(Connection connection, TransactionHandlerInterface<T> transactionHandlerInterface) {
+        this.connection = connection;
+        this.transactionHandlerInterface = transactionHandlerInterface;
     }
 
-    public ResultSet handleQueryTransaction(PreparedStatement preparedStatement, Connection connection) throws SQLException {
+    public T execute() throws SQLException {
         try {
             connection.setAutoCommit(false);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            T object = transactionHandlerInterface.run();
             connection.commit();
-            return resultSet;
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return object;
+        } catch (SQLException e){
             connection.rollback();
         }
         return null;

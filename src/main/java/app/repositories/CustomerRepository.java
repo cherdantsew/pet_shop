@@ -16,7 +16,6 @@ public class CustomerRepository extends DAO<Customer> {
     private static final String SELECT_BY_LOGIN_STATEMENT = "SELECT * FROM customers WHERE login = ?";
 
     Connection connection = getConnection();
-    TransactionHandler transactionHandler = new TransactionHandler();
 
     @Override
     public boolean insert(Customer customer) throws SQLException {
@@ -25,9 +24,20 @@ public class CustomerRepository extends DAO<Customer> {
         preparedStatement.setString(2, customer.getPassword());
         preparedStatement.setString(3, customer.getName());
         preparedStatement.setInt(4, customer.getAge());
-        return transactionHandler.handleUpdateTransaction(preparedStatement, connection) == 1;
-    }
 
+        TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>(connection, () -> {
+            try {
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return preparedStatement.getUpdateCount() == 1;
+        });
+        return transactionHandler.execute();
+
+
+        //return transactionHandler.handleUpdateTransaction(preparedStatement, connection) == 1;
+    }
 
     @Override
     public boolean update(Customer customer) throws SQLException {
@@ -37,14 +47,19 @@ public class CustomerRepository extends DAO<Customer> {
         preparedStatement.setString(3, customer.getName());
         preparedStatement.setInt(4, customer.getAge());
         preparedStatement.setInt(5, customer.getId());
-        return transactionHandler.handleUpdateTransaction(preparedStatement, connection) == 1;
+        TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>(connection, () -> preparedStatement.executeUpdate() == 1);
+        return transactionHandler.execute();
+
+
+        //return transactionHandler.handleUpdateTransaction(preparedStatement, connection) == 1;
     }
 
     @Override
     public Customer getById(int id) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID_STATEMENT);
         preparedStatement.setInt(1, id);
-        try (ResultSet resultSet = transactionHandler.handleQueryTransaction(preparedStatement, connection)) {
+        TransactionHandler<ResultSet> transactionHandler = new TransactionHandler<>(connection, () -> preparedStatement.executeQuery());
+        try (ResultSet resultSet = transactionHandler.execute()) {
             if (resultSet.next()) {
                 return mapCustomer(resultSet);
             }
@@ -56,26 +71,31 @@ public class CustomerRepository extends DAO<Customer> {
     public boolean delete(Customer customer) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_CUSTOMER_BY_ID_STATEMENT);
         preparedStatement.setInt(1, customer.getId());
-        return transactionHandler.handleUpdateTransaction(preparedStatement, connection) == 1;
+        TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>(connection, () -> preparedStatement.executeUpdate() == 1);
+        return transactionHandler.execute();
     }
 
     @Override
     public List<Customer> getAll() throws SQLException {
         List<Customer> customersList = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_FROM_CUSTOMERS_STATEMENT);
-        ResultSet resultSet = transactionHandler.handleQueryTransaction(preparedStatement, connection);
-        while (resultSet.next()) {
-            customersList.add(mapCustomer(resultSet));
+        TransactionHandler<ResultSet> transactionHandler = new TransactionHandler<>(connection, () -> preparedStatement.executeQuery());
+        try (ResultSet resultSet = transactionHandler.execute()) {
+            while (resultSet.next()) {
+                customersList.add(mapCustomer(resultSet));
+            }
+            return customersList;
         }
-        return customersList;
     }
 
     public Customer getByLogin(String login) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_LOGIN_STATEMENT);
         preparedStatement.setString(1, login);
-        ResultSet resultSet = transactionHandler.handleQueryTransaction(preparedStatement, connection);
-        while (resultSet.next()) {
-            return mapCustomer(resultSet);
+        TransactionHandler<ResultSet> transactionHandler = new TransactionHandler<>(connection, () -> preparedStatement.executeQuery());
+        try (ResultSet resultSet = transactionHandler.execute()) {
+            while (resultSet.next()) {
+                return mapCustomer(resultSet);
+            }
         }
         return null;
     }

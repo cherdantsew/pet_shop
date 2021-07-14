@@ -9,9 +9,7 @@ import java.util.List;
 public class BucketRepository extends DAO {
 
     public static final String GET_CUSTOMER_BUCKET_PROCEDURE = "{CALL GetCustomerBucket (?)}";
-
     Connection connection = getConnection();
-    TransactionHandler transactionHandler = new TransactionHandler();
 
     @Override
     public boolean insert(Object objectToInsert) {
@@ -42,9 +40,11 @@ public class BucketRepository extends DAO {
         List<Product> bucketProductsList = new ArrayList<>();
         CallableStatement callableStatement = connection.prepareCall(GET_CUSTOMER_BUCKET_PROCEDURE);
         callableStatement.setInt(1, user_id);
-        ResultSet resultSet = transactionHandler.handleQueryTransaction(callableStatement, connection);
-        while (resultSet.next()) {
-            bucketProductsList.add(mapBucket(resultSet));
+        TransactionHandler<ResultSet> transactionHandler = new TransactionHandler<>(connection, () -> callableStatement.executeQuery());
+        try (ResultSet resultSet = transactionHandler.execute()) {
+            while (resultSet.next()) {
+                bucketProductsList.add(mapBucket(resultSet));
+            }
         }
         return bucketProductsList;
     }

@@ -1,6 +1,7 @@
 package app.repositories;
 
 import app.entities.Product;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,6 @@ public class ProductRepository extends DAO<Product> {
 
     public static final String GET_PRODUCT_BY_CATEGORY_NAME_STATEMENT = "SELECT * FROM products WHERE product_category_id = (SELECT category_id FROM product_category WHERE category_name = ?)";
     Connection connection = getConnection();
-    TransactionHandler transactionHandler = new TransactionHandler();
 
     @Override
     public boolean insert(Product product) {
@@ -40,9 +40,11 @@ public class ProductRepository extends DAO<Product> {
         List<Product> productList = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_CATEGORY_NAME_STATEMENT);
         preparedStatement.setString(1, chosenCategoryName);
-        ResultSet resultSet = transactionHandler.handleQueryTransaction(preparedStatement, connection);
-        while (resultSet.next()) {
-            productList.add(mapProduct(resultSet));
+        TransactionHandler<ResultSet> transactionHandler = new TransactionHandler<>(connection, () -> preparedStatement.executeQuery());
+        try (ResultSet resultSet = transactionHandler.execute()) {
+            while (resultSet.next()) {
+                productList.add(mapProduct(resultSet));
+            }
         }
         return productList;
     }

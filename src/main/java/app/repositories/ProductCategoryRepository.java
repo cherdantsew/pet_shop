@@ -10,7 +10,6 @@ public class ProductCategoryRepository extends DAO<ProductCategory> {
 
     public static final String GET_ALL_STATEMENT = "SELECT * FROM product_category";
     Connection connection = getConnection();
-    TransactionHandler transactionHandler = new TransactionHandler();
 
     @Override
     public boolean insert(ProductCategory productCategory) {
@@ -36,9 +35,11 @@ public class ProductCategoryRepository extends DAO<ProductCategory> {
     public List<ProductCategory> getAll() throws SQLException {
         List<ProductCategory> categoryList = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_STATEMENT);
-        ResultSet resultSet = transactionHandler.handleQueryTransaction(preparedStatement, connection);
-        while (resultSet.next()) {
-            categoryList.add(mapProductCategory(resultSet));
+        TransactionHandler<ResultSet> transactionHandler = new TransactionHandler<>(connection, () -> preparedStatement.executeQuery());
+        try (ResultSet resultSet = transactionHandler.execute()) {
+            while (resultSet.next()) {
+                categoryList.add(mapProductCategory(resultSet));
+            }
         }
         return categoryList;
     }
