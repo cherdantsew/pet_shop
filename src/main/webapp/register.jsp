@@ -8,6 +8,9 @@
 <c:if test="${requestScope.isAdded}">
     <h5>Success! <a href="${pageContext.request.contextPath}/login">Try to log in once again.</a></h5>
 </c:if>
+<c:if test="${requestScope.loginAlreadyTaken == false}">
+    <h5>User with that login already exists! Try another login.</h5>
+</c:if>
 
 
 <h1>Fill in the fields.</h1>

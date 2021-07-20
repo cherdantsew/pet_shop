@@ -9,34 +9,32 @@ import java.util.List;
 public class ProductCategoryRepository extends DAO<ProductCategory> {
 
     public static final String GET_ALL_STATEMENT = "SELECT * FROM product_category";
-    Connection connection = getConnection();
 
     @Override
-    public boolean insert(ProductCategory productCategory) {
+    public boolean insert(Connection connection, ProductCategory productCategory) {
         return false;
     }
 
     @Override
-    public boolean update(ProductCategory productCategory) {
+    public boolean update(Connection connection, ProductCategory productCategory) {
         return false;
     }
 
     @Override
-    public ProductCategory getById(int id) {
+    public ProductCategory getById(Connection connection, int id) {
         return null;
     }
 
     @Override
-    public boolean delete(ProductCategory productCategory) {
+    public boolean delete(Connection connection, ProductCategory productCategory) {
         return false;
     }
 
     @Override
-    public List<ProductCategory> getAll() throws SQLException {
+    public List<ProductCategory> getAll(Connection connection) throws SQLException {
         List<ProductCategory> categoryList = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_STATEMENT);
-        TransactionHandler<ResultSet> transactionHandler = new TransactionHandler<>(connection, () -> preparedStatement.executeQuery());
-        try (ResultSet resultSet = transactionHandler.execute()) {
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 categoryList.add(mapProductCategory(resultSet));
             }

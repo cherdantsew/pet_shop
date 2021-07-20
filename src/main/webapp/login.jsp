@@ -8,7 +8,9 @@
 <c:if test="${sessionScope.customer == null}">
     <h5>Don't have an account?<a href="${pageContext.request.contextPath}/register">Sign in!</a></h5>
 </c:if>
-
+<c:if test="${requestScope.badCredentials}">
+    <h5>Invalid combination login/password. Try one more time.</h5>
+</c:if>
 <h2>Log in</h2>
 <form method="post" action="${pageContext.request.contextPath}/login">
     <label>Login:<input type="text" name="login"><br/>

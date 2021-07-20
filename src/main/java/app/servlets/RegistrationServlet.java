@@ -1,7 +1,9 @@
 package app.servlets;
 
-import app.repositories.CustomerRepository;
 import app.entities.Customer;
+import app.exceptions.CustomerAlreadyExistsException;
+import app.exceptions.TransactionExecutionException;
+import app.service.RegistrationService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,13 +11,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
     private final Logger logger = Logger.getLogger(RegistrationServlet.class.getName());
+    private final RegistrationService registrationService = new RegistrationService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,14 +28,15 @@ public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Customer customer = getCustomer(req);
         try {
-            boolean isAdded = new CustomerRepository().insert(customer);
-            if (isAdded) {
+            if (registrationService.doRegistration(customer)) {
                 req.setAttribute("isAdded", true);
-                doGet(req, resp);
             }
-        } catch (SQLException e) {
-            logger.log(Level.WARNING, "Error while trying to insert a new customer into database", e);
+        } catch (CustomerAlreadyExistsException e) {
+            req.setAttribute("loginAlreadyTaken", true);
+        } catch (TransactionExecutionException e) {
+            logger.log(Level.WARNING, "Error while executing transaction in RegistrationService class.", e);
         }
+        doGet(req, resp);
     }
 
     private Customer getCustomer(HttpServletRequest req) {
