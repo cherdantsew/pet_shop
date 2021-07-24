@@ -1,7 +1,6 @@
 package app.repositories;
 
 import app.entities.Product;
-import app.entities.ProductCategory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,36 +11,35 @@ public class ProductRepository extends DAO<Product> {
     public static final String GET_PRODUCT_BY_CATEGORY_NAME_STATEMENT = "SELECT * FROM products WHERE product_category_id = (SELECT category_id FROM product_category WHERE category_name = ?)";
 
     @Override
-    public boolean insert(Product product) {
+    public boolean insert(Connection connection, Product objectToInsert) throws SQLException {
         return false;
     }
 
     @Override
-    public boolean update(Product product) {
+    public boolean update(Connection connection, Product objectToUpdate) throws SQLException {
         return false;
     }
 
     @Override
-    public Product getById(int id) {
+    public Product getById(Connection connection, int id) throws SQLException {
         return null;
     }
 
     @Override
-    public boolean delete(Product product) {
+    public boolean delete(Connection connection, Product objectToDelete) throws SQLException {
         return false;
     }
 
     @Override
-    public List getAll() {
+    public List<Product> getAll(Connection connection) throws SQLException {
         return null;
     }
 
-    public List getByCategoryName(String chosenCategoryName) throws SQLException {
-        List<Product> productList = new ArrayList();
-        try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_PRODUCT_BY_CATEGORY_NAME_STATEMENT);
-            statement.setString(1, chosenCategoryName);
-            ResultSet resultSet = statement.executeQuery();
+    public List<Product> getByCategoryName(Connection connection, String chosenCategoryName) throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_CATEGORY_NAME_STATEMENT);
+        preparedStatement.setString(1, chosenCategoryName);
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 productList.add(mapProduct(resultSet));
             }

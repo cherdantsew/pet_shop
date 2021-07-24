@@ -3,8 +3,10 @@ package app.service;
 import app.converters.CustomerConverter;
 import app.dto.CustomerDTO;
 import app.entities.Customer;
-import app.exceptions.CustomerNotFountException;
+import app.exceptions.BadCredentialsException;
+import app.exceptions.TransactionExecutionException;
 import app.repositories.CustomerRepository;
+import app.repositories.TransactionHandler;
 
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -18,13 +20,16 @@ public class LoginService {
 
     public CustomerDTO doLogin(String login, String password) {
         try {
-            Customer customer = customerRepository.getByLogin(login);
-            if (customer != null && password.equals(customer.getPassword()))
+            TransactionHandler<Customer> transactionHandler = new TransactionHandler((connection) -> customerRepository.getByLogin(connection, login));
+            Customer customer = transactionHandler.execute();
+            if (customer != null && password.equals(customer.getPassword())) {
                 return customerConverter.toDto(customer);
+            } else {
+                throw new BadCredentialsException(String.format("Invalid credentials: login:%s, password:%s", login, password));
+            }
         } catch (SQLException e) {
-            logger.log(Level.WARNING, "couldn't establish connection to database while getting customer by login", e);
+            logger.log(Level.WARNING, "couldn't execute transaction in LoginService", e);
+            throw new TransactionExecutionException(e);
         }
-        logger.warning(String.format("User wasn't found. Credentials: login:%s, password: %s", login, password));
-        throw new CustomerNotFountException(login, password);
     }
 }

@@ -10,39 +10,11 @@ public class BucketRepository extends DAO {
 
     public static final String GET_CUSTOMER_BUCKET_PROCEDURE = "{CALL GetCustomerBucket (?)}";
 
-    @Override
-    public boolean insert(Object objectToInsert) {
-        return false;
-    }
-
-    @Override
-    public boolean update(Object objectToUpdate) {
-        return false;
-    }
-
-    @Override
-    public Object getById(int id) {
-        return null;
-    }
-
-    @Override
-    public boolean delete(Object objectToDelete) {
-        return false;
-    }
-
-    @Override
-    public List getAll() {
-        return null;
-    }
-
-    public List<Product> getBucketByUserId (int user_id) throws SQLException {
-        List<Product> bucketProductsList = new ArrayList();
-        try (Connection connection = getConnection()) {
-            String GetCustomerBucketURL = GET_CUSTOMER_BUCKET_PROCEDURE;
-            CallableStatement callableStatement = connection.prepareCall(GetCustomerBucketURL);
-            callableStatement.setInt(1, user_id);
-            callableStatement.execute();
-            ResultSet resultSet = callableStatement.getResultSet();
+    public List<Product> getBucketByCustomerId(Connection connection, int user_id) throws SQLException {
+        List<Product> bucketProductsList = new ArrayList<>();
+        CallableStatement callableStatement = connection.prepareCall(GET_CUSTOMER_BUCKET_PROCEDURE);
+        callableStatement.setInt(1, user_id);
+        try (ResultSet resultSet  = callableStatement.executeQuery()) {
             while (resultSet.next()) {
                 bucketProductsList.add(mapBucket(resultSet));
             }
@@ -58,4 +30,28 @@ public class BucketRepository extends DAO {
                 resultSet.getString("product_description"));
     }
 
+    @Override
+    public boolean insert(Connection connection, Object objectToInsert) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public boolean update(Connection connection, Object objectToUpdate) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public Object getById(Connection connection, int id) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public boolean delete(Connection connection, Object objectToDelete) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public List getAll(Connection connection) throws SQLException {
+        return null;
+    }
 }

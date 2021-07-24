@@ -1,7 +1,7 @@
 package app.servlets;
 
 import app.dto.CustomerDTO;
-import app.entities.Customer;
+import app.exceptions.BadCredentialsException;
 import app.service.LoginService;
 
 import javax.servlet.ServletException;
@@ -10,11 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
     private final LoginService loginService = new LoginService();
+    private final Logger logger = Logger.getLogger(LoginServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,12 +28,16 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        CustomerDTO customerDto = loginService.doLogin(login, password);
-        if (customerDto != null) {
-            req.getSession().setAttribute("customer", customerDto);
-            resp.sendRedirect(req.getContextPath() + "/customer/homepage");
-            return;
+        try {
+            CustomerDTO customerDto = loginService.doLogin(login, password);
+            if (customerDto != null) {
+                req.getSession().setAttribute("customer", customerDto);
+                resp.sendRedirect(req.getContextPath() + "/customer/homepage");
+            }
+        } catch (BadCredentialsException e) {
+            logger.log(Level.WARNING, "Bad credentials while logging in. ");
+            req.setAttribute("badCredentials", true);
+            doGet(req, resp);
         }
-        doGet(req, resp);
     }
 }
