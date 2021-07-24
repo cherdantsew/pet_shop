@@ -35,7 +35,7 @@ public class ProductRepository extends DAO<Product> {
         return null;
     }
 
-    public List getByCategoryName(Connection connection, String chosenCategoryName) throws SQLException {
+    public List<Product> getByCategoryName(Connection connection, String chosenCategoryName) throws SQLException {
         List<Product> productList = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_CATEGORY_NAME_STATEMENT);
         preparedStatement.setString(1, chosenCategoryName);

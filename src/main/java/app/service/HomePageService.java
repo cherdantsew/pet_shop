@@ -19,7 +19,7 @@ public class HomePageService {
 
     public List<ProductCategory> getProductCategories() {
         try {
-            TransactionHandler<List<ProductCategory>> transactionHandler = new TransactionHandler<>(connection -> productCategoryRepository.getAll(connection));
+            TransactionHandler<List<ProductCategory>> transactionHandler = new TransactionHandler<>(productCategoryRepository::getAll);
             return transactionHandler.execute();
         } catch (SQLException e) {
             throw new TransactionExecutionException(e);
