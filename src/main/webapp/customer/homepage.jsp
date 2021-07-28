@@ -15,19 +15,24 @@
 
 <h3><a href="${pageContext.request.contextPath}/customer/logout">Logout.</a></h3>
 
-<% List<ProductCategory> productCategoriesList = (List<ProductCategory>) request.getSession().getAttribute("categories"); %>
-
 <form method="post">
-    <c:forEach var="productCategory" items="${sessionScope.categories}">
-        <button type="submit" name="chosenCategoryName"
-                value="${productCategory.categoryName}">${productCategory.categoryName}
-        </button>
-    </c:forEach>
+    <select size="${requestScope.categories.size()}" name="chosenCategoryName">
+        <c:forEach var="productCategory" items="${requestScope.categories}">
+            <option>${productCategory.categoryName}</option>
+        </c:forEach>
+    </select>
+    <button type="submit">Show</button>
+</form>
+
+<h5>Search products by name</h5>
+<form method="post">
+    <input type="text" name="productNamePrefix" value="Type product name here">
+    <button type="submit">Search</button>
 </form>
 
 <form method="post">
     <ul>
-        <c:forEach var="product" items="${sessionScope.products}">
+        <c:forEach var="product" items="${requestScope.products}">
             <li>Name: ${product.productName} </br>
                 Price: ${product.productPrice} </br>
                 Description: ${product.productDescription}
