@@ -6,7 +6,7 @@
 </head>
 <body>
 <c:if test="${sessionScope.customer == null}">
-    <h5>Don't have an account?<a href="${pageContext.request.contextPath}/register">Sign in!</a></h5>
+    <h5>Don't have an account?<a href="${pageContext.request.contextPath}/register">Sign up!</a></h5>
 </c:if>
 <c:if test="${requestScope.badCredentials}">
     <h5>Invalid combination login/password. Try one more time.</h5>

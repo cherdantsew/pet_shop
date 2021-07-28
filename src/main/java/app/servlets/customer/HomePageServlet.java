@@ -4,7 +4,8 @@ import app.dto.CustomerDTO;
 import app.entities.Order;
 import app.entities.Product;
 import app.exceptions.TransactionExecutionException;
-import app.service.HomePageService;
+import app.service.BucketService;
+import app.service.ProductService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,37 +20,49 @@ import java.util.logging.Logger;
 
 @WebServlet("/customer/homepage")
 public class HomePageServlet extends HttpServlet {
-    private final HomePageService homePageService = new HomePageService();
 
+    private static final String HOMEPAGE_JSP = "/customer/homepage.jsp";
+    private final BucketService bucketService = new BucketService();
+    private final ProductService productService = new ProductService();
     private final Logger logger = Logger.getLogger(HomePageServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.getSession().setAttribute("categories", homePageService.getProductCategories());
+            req.setAttribute("categories", productService.getProductCategories());
+            req.setAttribute("products", productService.getAllProducts());
+            req.getRequestDispatcher(HOMEPAGE_JSP).forward(req, resp);
         } catch (TransactionExecutionException e) {
             logger.log(Level.WARNING, "Couldn't perform transaction (getting product categories).");
         }
-        req.getRequestDispatcher("/customer/homepage.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            if (req.getParameter("chosenCategoryName") != null) {
-                List<Product> productList = homePageService.getProductsByCategoryName(req.getParameter("chosenCategoryName"));
-                req.getSession().setAttribute("products", productList);
+            String chosenCategoryName = req.getParameter("chosenCategoryName");
+            String productNamePrefix = req.getParameter("productNamePrefix");
+            String chosenProductToBucket = req.getParameter("chosenProduct");
+            if (chosenCategoryName != null) {
+                List<Product> productList = productService.getProductsByCategoryName(chosenCategoryName);
+                req.setAttribute("products", productList);
             }
-            if (req.getParameter("chosenProduct") != null) {
+            if (productNamePrefix != null) {
+                List<Product> prefixProductList = productService.getProductsByNamePrefix(productNamePrefix);
+                req.setAttribute("products", prefixProductList);
+            }
+            if (chosenProductToBucket != null) {
                 Order order = createOrder(req);
-                if (homePageService.addBucketItem(order)) {
+                if (bucketService.addBucketItem(order)) {
                     req.setAttribute("addedToBucket", true);
                 }
             }
+            req.setAttribute("categories", productService.getProductCategories());
+            req.getRequestDispatcher(HOMEPAGE_JSP).forward(req, resp);
         } catch (TransactionExecutionException e) {
             logger.log(Level.WARNING, "Couldnt perform transaction (getting products by category name", e);
+            doGet(req, resp);
         }
-        doGet(req, resp);
     }
 
     private Order createOrder(HttpServletRequest req) {
