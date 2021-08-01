@@ -1,6 +1,7 @@
 package app.repositories;
 
 import app.entities.Customer;
+import app.entities.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,6 +15,27 @@ public class CustomerRepository extends DAO<Customer> {
     public static final String DELETE_CUSTOMER_BY_ID_STATEMENT = "DELETE FROM customers WHERE customer_id = ?";
     public static final String SELECT_ALL_FROM_CUSTOMERS_STATEMENT = "SELECT * FROM customers";
     private static final String SELECT_BY_LOGIN_STATEMENT = "SELECT * FROM customers WHERE login = ?";
+    private static final String GET_CUSTOMER_BUCKET_PROCEDURE = "{CALL GetCustomerBucket (?)}";
+
+    public List<Product> getBucketProductsByCustomerId(Connection connection, int user_id) throws SQLException {
+        List<Product> bucketProductsList = new ArrayList<>();
+        CallableStatement callableStatement = connection.prepareCall(GET_CUSTOMER_BUCKET_PROCEDURE);
+        callableStatement.setInt(1, user_id);
+        try (ResultSet resultSet  = callableStatement.executeQuery()) {
+            while (resultSet.next()) {
+                bucketProductsList.add(mapBucket(resultSet));
+            }
+        }
+        return bucketProductsList;
+    }
+    private Product mapBucket(ResultSet resultSet) throws SQLException {
+        return new Product(
+                resultSet.getInt("product_id"),
+                resultSet.getString("product_category_id"),
+                resultSet.getString("product_name"),
+                resultSet.getString("product_price"),
+                resultSet.getString("product_description"));
+    }
 
     @Override
     public boolean insert(Connection connection, Customer customer) throws SQLException {

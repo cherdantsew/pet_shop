@@ -10,28 +10,6 @@ import java.util.List;
 public class OrderRepository extends DAO<Order> {
 
     private static final String INSERT_INTO_ORDERS_STATEMENT = "INSERT INTO orders (customer_id, order_date, product_id, status) VALUES (?, sysdate(), ?, ?)";
-    private static final String GET_CUSTOMER_BUCKET_PROCEDURE = "{CALL GetCustomerBucket (?)}";
-
-    public List<Product> getBucketProductsByCustomerId(Connection connection, int user_id) throws SQLException {
-        List<Product> bucketProductsList = new ArrayList<>();
-        CallableStatement callableStatement = connection.prepareCall(GET_CUSTOMER_BUCKET_PROCEDURE);
-        callableStatement.setInt(1, user_id);
-        try (ResultSet resultSet  = callableStatement.executeQuery()) {
-            while (resultSet.next()) {
-                bucketProductsList.add(mapBucket(resultSet));
-            }
-        }
-        return bucketProductsList;
-    }
-
-    private Product mapBucket(ResultSet resultSet) throws SQLException {
-        return new Product(
-                resultSet.getInt("product_id"),
-                resultSet.getString("product_category_id"),
-                resultSet.getString("product_name"),
-                resultSet.getString("product_price"),
-                resultSet.getString("product_description"));
-    }
 
     @Override
     public boolean insert(Connection connection, Order order) throws SQLException {

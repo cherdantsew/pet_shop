@@ -1,11 +1,11 @@
 package app.servlets.customer;
 
 import app.dto.CustomerDTO;
+import app.dto.ProductDTO;
 import app.entities.Order;
-import app.entities.Product;
 import app.exceptions.TransactionExecutionException;
 import app.service.BucketService;
-import app.service.ProductService;
+import app.service.ProductSearchService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,14 +23,14 @@ public class HomePageServlet extends HttpServlet {
 
     private static final String HOMEPAGE_JSP = "/customer/homepage.jsp";
     private final BucketService bucketService = new BucketService();
-    private final ProductService productService = new ProductService();
+    private final ProductSearchService productSearchService = new ProductSearchService();
     private final Logger logger = Logger.getLogger(HomePageServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            req.setAttribute("categories", productService.getProductCategories());
-            req.setAttribute("products", productService.getAllProducts());
+            req.setAttribute("categories", productSearchService.getProductCategories());
+            req.setAttribute("products", productSearchService.getAllProducts());
             req.getRequestDispatcher(HOMEPAGE_JSP).forward(req, resp);
         } catch (TransactionExecutionException e) {
             logger.log(Level.WARNING, "Couldn't perform transaction (getting product categories).");
@@ -44,11 +44,11 @@ public class HomePageServlet extends HttpServlet {
             String productNamePrefix = req.getParameter("productNamePrefix");
             String chosenProductToBucket = req.getParameter("chosenProduct");
             if (chosenCategoryName != null) {
-                List<Product> productList = productService.getProductsByCategoryName(chosenCategoryName);
+                List<ProductDTO> productList = productSearchService.getProductsByCategoryName(chosenCategoryName);
                 req.setAttribute("products", productList);
             }
             if (productNamePrefix != null) {
-                List<Product> prefixProductList = productService.getProductsByNamePrefix(productNamePrefix);
+                List<ProductDTO> prefixProductList = productSearchService.getProductsByNamePrefix(productNamePrefix);
                 req.setAttribute("products", prefixProductList);
             }
             if (chosenProductToBucket != null) {
@@ -57,10 +57,10 @@ public class HomePageServlet extends HttpServlet {
                     req.setAttribute("addedToBucket", true);
                 }
             }
-            req.setAttribute("categories", productService.getProductCategories());
+            req.setAttribute("categories", productSearchService.getProductCategories());
             req.getRequestDispatcher(HOMEPAGE_JSP).forward(req, resp);
         } catch (TransactionExecutionException e) {
-            logger.log(Level.WARNING, "Couldnt perform transaction (getting products by category name", e);
+            logger.log(Level.WARNING, "Couldn't perform transaction (getting products by category name", e);
             doGet(req, resp);
         }
     }

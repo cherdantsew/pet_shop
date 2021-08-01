@@ -41,7 +41,8 @@ public class ProductRepository extends DAO<Product> {
                 productList.add(mapProduct(resultSet));
             }
         }
-        return productList;    }
+        return productList;
+    }
 
     public List<Product> getByCategoryName(Connection connection, String chosenCategoryName) throws SQLException {
         List<Product> productList = new ArrayList<>();
@@ -74,4 +75,52 @@ public class ProductRepository extends DAO<Product> {
                 resultSet.getString("product_price"),
                 resultSet.getString("product_description"));
     }
+
+    public List<Product> searchByCategoryAndNamePrefix(Connection connection, String chosenCategoryName, String productNamePrefix) throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        StringBuilder customerSearchStatement = new StringBuilder(GET_ALL_STATEMENT);
+        int numberOfParameters = 0;
+        boolean isCategoryChosen = false;
+        boolean isNameChosen = false;
+
+        if (chosenCategoryName != null) {
+            numberOfParameters += 1;
+            customerSearchStatement.append("product_category_id = (SELECT category_id FROM product_category WHERE category_name = ?)");
+            isCategoryChosen = true;
+        }
+        if (productNamePrefix != null) {
+            numberOfParameters += 1;
+            customerSearchStatement.append(" AND product_name LIKE (?)");
+            isNameChosen = true;
+        }
+        PreparedStatement preparedStatement;
+        if (numberOfParameters == 0) {
+            preparedStatement = connection.prepareStatement(GET_ALL_STATEMENT);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    productList.add(mapProduct(resultSet));
+                }
+            }
+        } else {
+            preparedStatement = connection.prepareStatement(customerSearchStatement.toString());
+            for (int i = 1; i <= numberOfParameters; i++) {
+                if (isCategoryChosen) {
+                    preparedStatement.setString(i, chosenCategoryName);
+                    isCategoryChosen = false;
+                    continue;
+                }
+                if (isNameChosen) {
+                    preparedStatement.setString(i, productNamePrefix);
+                    isNameChosen = false;
+                }
+            }
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    productList.add(mapProduct(resultSet));
+                }
+            }
+        }
+        return productList;
+    }
 }
+

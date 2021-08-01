@@ -3,6 +3,7 @@ package app.service;
 import app.entities.Order;
 import app.entities.Product;
 import app.exceptions.TransactionExecutionException;
+import app.repositories.CustomerRepository;
 import app.repositories.OrderRepository;
 import app.repositories.TransactionHandler;
 
@@ -11,9 +12,10 @@ import java.util.List;
 
 public class BucketService {
     private final OrderRepository orderRepository = new OrderRepository();
+    private final CustomerRepository customerRepository = new CustomerRepository();
     public List<Product> getBucket(int customerId) {
         try {
-            TransactionHandler<List<Product>> transactionHandler = new TransactionHandler<>((connection) -> orderRepository.getBucketProductsByCustomerId(connection, customerId));
+            TransactionHandler<List<Product>> transactionHandler = new TransactionHandler<>((connection) -> customerRepository.getBucketProductsByCustomerId(connection, customerId));
             return transactionHandler.execute();
         } catch (SQLException e) {
             throw new TransactionExecutionException(e);
