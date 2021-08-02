@@ -22,7 +22,7 @@ public class BucketServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             CustomerDTO customerDTO = (CustomerDTO) req.getSession().getAttribute("customer");
-            req.getSession().setAttribute("bucket", bucketService.getBucket(customerDTO.getId()));
+            req.setAttribute("bucket", bucketService.getBucket(customerDTO.getId()));
         } catch (TransactionExecutionException e) {
             logger.log(Level.WARNING, "Error while performing transaction", e);
         }

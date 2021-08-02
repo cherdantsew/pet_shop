@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@WebServlet("customer/homepage/products/search")
+@WebServlet("/customer/homepage/products/search")
 public class ProductsSearchServlet extends HttpServlet {
 
     private final ProductSearchService productSearchService = new ProductSearchService();
@@ -24,10 +24,12 @@ public class ProductsSearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            System.out.println("popal v doget");
             String chosenCategoryName = req.getParameter("chosenCategoryName");
             String productNamePrefix = req.getParameter("productNamePrefix");
             List<ProductDTO> productDTOList = productSearchService.handleSearchRequest(chosenCategoryName, productNamePrefix);
             req.setAttribute("products", productDTOList);
+            req.setAttribute("categories", productSearchService.getProductCategories());
             req.getRequestDispatcher(HOMEPAGE_JSP).forward(req, resp);
         } catch (TransactionExecutionException e){
             logger.log(Level.WARNING, "Couldn't execute transaction (getting list of products related to a customer request.");

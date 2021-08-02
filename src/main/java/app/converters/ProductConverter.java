@@ -10,10 +10,10 @@ import java.util.List;
 public class ProductConverter {
     private ProductDTO toDTO(Product product) {
         return ProductDTO.builder()
-                .id(product.getProductId())
-                .name(product.getProductName())
-                .price(product.getProductPrice())
-                .description(product.getProductDescription())
+                .productId(product.getProductId())
+                .productName(product.getProductName())
+                .productPrice(product.getProductPrice())
+                .productDescription(product.getProductDescription())
                 .build();
     }
     public List<ProductDTO> toProductDTOList(List<Product> productList){

@@ -85,12 +85,13 @@ public class ProductRepository extends DAO<Product> {
 
         if (chosenCategoryName != null) {
             numberOfParameters += 1;
-            customerSearchStatement.append("product_category_id = (SELECT category_id FROM product_category WHERE category_name = ?)");
+            customerSearchStatement.append(" WHERE product_category_id = (SELECT category_id FROM product_category WHERE category_name = ?)");
             isCategoryChosen = true;
         }
         if (productNamePrefix != null) {
             numberOfParameters += 1;
-            customerSearchStatement.append(" AND product_name LIKE (?)");
+            if (numberOfParameters > 1) customerSearchStatement.append(" AND product_name LIKE (?)");
+            else customerSearchStatement.append(" WHERE product_name LIKE (?)");
             isNameChosen = true;
         }
         PreparedStatement preparedStatement;
@@ -110,14 +111,14 @@ public class ProductRepository extends DAO<Product> {
                     continue;
                 }
                 if (isNameChosen) {
-                    preparedStatement.setString(i, productNamePrefix);
+                    preparedStatement.setString(i, "%" + productNamePrefix + "%");
                     isNameChosen = false;
                 }
             }
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    productList.add(mapProduct(resultSet));
-                }
+        }
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                productList.add(mapProduct(resultSet));
             }
         }
         return productList;

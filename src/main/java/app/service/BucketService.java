@@ -8,14 +8,14 @@ import app.repositories.OrderRepository;
 import app.repositories.TransactionHandler;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Map;
 
 public class BucketService {
     private final OrderRepository orderRepository = new OrderRepository();
     private final CustomerRepository customerRepository = new CustomerRepository();
-    public List<Product> getBucket(int customerId) {
+    public Map<Integer, Product> getBucket(int customerId) {
         try {
-            TransactionHandler<List<Product>> transactionHandler = new TransactionHandler<>((connection) -> customerRepository.getBucketProductsByCustomerId(connection, customerId));
+            TransactionHandler<Map<Integer, Product>> transactionHandler = new TransactionHandler<>((connection) -> customerRepository.getBucketProductsByCustomerId(connection, customerId));
             return transactionHandler.execute();
         } catch (SQLException e) {
             throw new TransactionExecutionException(e);

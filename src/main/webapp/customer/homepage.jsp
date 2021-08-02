@@ -15,22 +15,18 @@
 
 <h3><a href="${pageContext.request.contextPath}/customer/logout">Logout.</a></h3>
 
-<form method="post">
+<form method="get" action="${pageContext.request.contextPath}/customer/homepage/products/search">
     <select size="${requestScope.categories.size()}" name="chosenCategoryName">
         <c:forEach var="productCategory" items="${requestScope.categories}">
             <option>${productCategory.categoryName}</option>
         </c:forEach>
     </select>
-    <button type="submit">Show</button>
-</form>
-
-<h5>Search products by name</h5>
-<form method="post">
+    <h5>Search products by name</h5>
     <input type="text" name="productNamePrefix" value="Type product name here">
     <button type="submit">Search</button>
 </form>
 
-<form method="post">
+<form method="post" action="${pageContext.request.contextPath}/customer/homepage">
     <ul>
         <c:forEach var="product" items="${requestScope.products}">
             <li>Name: ${product.productName} </br>
