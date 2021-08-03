@@ -2,7 +2,6 @@ package app.servlets.customer;
 
 import app.dto.CustomerDTO;
 import app.entities.Order;
-import app.exceptions.TransactionExecutionException;
 import app.service.BucketService;
 import app.service.ProductSearchService;
 
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet("/customer/homepage")
@@ -26,30 +24,21 @@ public class HomePageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            req.setAttribute("categories", productSearchService.getProductCategories());
-            req.setAttribute("products", productSearchService.getAllProducts());
-            req.getRequestDispatcher(HOMEPAGE_JSP).forward(req, resp);
-        } catch (TransactionExecutionException e) {
-            logger.log(Level.WARNING, "Couldn't perform transaction (getting product categories).");
-        }
+        req.setAttribute("categories", productSearchService.getProductCategories());
+        req.setAttribute("products", productSearchService.getAllProducts());
+        req.getRequestDispatcher(HOMEPAGE_JSP).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            String chosenProductToBucket = req.getParameter("chosenProduct");
-            if (chosenProductToBucket != null) {
-                Order order = createOrder(req);
-                if (bucketService.addBucketItem(order)) {
-                    req.setAttribute("addedToBucket", true);
-                }
+        String chosenProductToBucket = req.getParameter("chosenProduct");
+        if (chosenProductToBucket != null) {
+            Order order = createOrder(req);
+            if (bucketService.addBucketItem(order)) {
+                req.setAttribute("addedToBucket", true);
             }
-            doGet(req, resp);
-        } catch (TransactionExecutionException e) {
-            logger.log(Level.WARNING, "Couldn't perform transaction (adding product to bucket", e);
-            doGet(req, resp);
         }
+        doGet(req, resp);
     }
 
     private Order createOrder(HttpServletRequest req) {

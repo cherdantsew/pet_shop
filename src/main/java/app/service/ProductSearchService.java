@@ -22,22 +22,9 @@ public class ProductSearchService {
     private final ProductConverter productConverter = new ProductConverter();
     private final ProductCategoryConverter productCategoryConverter = new ProductCategoryConverter();
 
-    public List<ProductDTO> handleSearchRequest(String chosenCategoryName, String productNamePrefix) {
-        try {
-            TransactionHandler<List<Product>> transactionHandler = new TransactionHandler<>(connection -> productRepository.searchByCategoryAndNamePrefix(connection, chosenCategoryName, productNamePrefix));
-            return productConverter.toProductDTOList(transactionHandler.execute());
-        } catch (SQLException e){
-            throw new TransactionExecutionException(e);
-        }
-    }
-
-    public List<ProductDTO> getProductsByCategoryName(String chosenCategoryName) {
-        try {
-            TransactionHandler<List<Product>> transactionHandler = new TransactionHandler<>(connection -> productRepository.getByCategoryName(connection, chosenCategoryName));
-            return productConverter.toProductDTOList(transactionHandler.execute());
-        } catch (SQLException e) {
-            throw new TransactionExecutionException(e);
-        }
+    public List<ProductDTO> search(String chosenCategoryName, String productNamePrefix) throws SQLException {
+        TransactionHandler<List<Product>> transactionHandler = new TransactionHandler<>(connection -> productRepository.search(connection, chosenCategoryName, productNamePrefix));
+        return productConverter.toProductDTOList(transactionHandler.execute());
     }
 
     public List<ProductDTO> getAllProducts() {
@@ -53,15 +40,6 @@ public class ProductSearchService {
         try {
             TransactionHandler<List<ProductCategory>> transactionHandler = new TransactionHandler<>(productCategoryRepository::getAll);
             return productCategoryConverter.toProductCategoryDTOList(transactionHandler.execute());
-        } catch (SQLException e) {
-            throw new TransactionExecutionException(e);
-        }
-    }
-
-    public List<ProductDTO> getProductsByNamePrefix(String productNamePrefix) {
-        try {
-            TransactionHandler<List<Product>> transactionHandler = new TransactionHandler<>(connection -> productRepository.getByNamePrefix(connection, productNamePrefix));
-            return productConverter.toProductDTOList(transactionHandler.execute());
         } catch (SQLException e) {
             throw new TransactionExecutionException(e);
         }

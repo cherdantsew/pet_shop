@@ -102,7 +102,7 @@ public class CustomerRepository extends DAO<Customer> {
         PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_LOGIN_STATEMENT);
         preparedStatement.setString(1, login);
         try (ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 return mapCustomer(resultSet);
             }
         }

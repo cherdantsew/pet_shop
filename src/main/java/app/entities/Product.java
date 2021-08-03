@@ -1,8 +1,10 @@
 package app.entities;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class Product {
     private int productId;
     private String productCategory;

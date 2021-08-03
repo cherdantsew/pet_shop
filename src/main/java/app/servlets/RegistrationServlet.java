@@ -1,6 +1,5 @@
 package app.servlets;
 
-import app.exceptions.TransactionExecutionException;
 import app.exceptions.ValidationException;
 import app.service.RegistrationService;
 
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet("/register")
@@ -36,8 +34,6 @@ public class RegistrationServlet extends HttpServlet {
             }
         } catch (ValidationException e) {
             req.setAttribute("loginAlreadyTaken", true);
-        } catch (TransactionExecutionException e) {
-            logger.log(Level.WARNING, "Error while executing transaction in RegistrationService class.", e);
         }
         req.getRequestDispatcher(REGISTER_JSP).forward(req, resp);
     }

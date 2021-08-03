@@ -16,12 +16,13 @@ import java.util.logging.Logger;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
+    public static final String LOGIN_JSP = "login.jsp";
     private final LoginService loginService = new LoginService();
     private final Logger logger = Logger.getLogger(LoginServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("login.jsp").forward(req, resp);
+        req.getRequestDispatcher(LOGIN_JSP).forward(req, resp);
     }
 
     @Override

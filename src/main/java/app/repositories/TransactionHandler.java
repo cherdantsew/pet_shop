@@ -13,8 +13,6 @@ public class TransactionHandler<T> {
 
     private static final String JAVA_COMP_ENV = "java:comp/env";
     private static final String JDBC_JAVASHEMA = "jdbc/javashema";
-
-    private final Connection connection = getConnection();
     private final TransactionHandlerInterface<T> transactionHandlerInterface;
 
     public TransactionHandler(TransactionHandlerInterface<T> transactionHandlerInterface) {
@@ -22,18 +20,21 @@ public class TransactionHandler<T> {
     }
 
     public T execute() throws SQLException {
-        try {
-            connection.setAutoCommit(false);
-            T object = transactionHandlerInterface.run(connection);
-            connection.commit();
-            return object;
-        } catch (SQLException e) {
-            connection.rollback();
+        try (Connection connection = getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+                T object = transactionHandlerInterface.run(connection);
+                connection.commit();
+                return object;
+
+            } catch (SQLException e) {
+                connection.rollback();
+            }
+            return null;
         }
-        return null;
     }
 
-    protected Connection getConnection() {
+    private Connection getConnection() {
         try {
             Context initContext = new InitialContext();
             Context envContext = (Context) initContext.lookup(JAVA_COMP_ENV);

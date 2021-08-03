@@ -1,4 +1,4 @@
-package app.Filter;
+package app.filters;
 
 
 import javax.servlet.*;

@@ -1,10 +1,10 @@
 package app.repositories;
 
 import app.entities.Order;
-import app.entities.Product;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public class OrderRepository extends DAO<Order> {
@@ -16,6 +16,7 @@ public class OrderRepository extends DAO<Order> {
         PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO_ORDERS_STATEMENT);
         preparedStatement.setInt(1, order.getCustomerId());
         preparedStatement.setInt(2, order.getProductId());
+       // Instant.now()
         preparedStatement.setString(3, order.getStatus());
         return preparedStatement.executeUpdate() == 1;
     }
