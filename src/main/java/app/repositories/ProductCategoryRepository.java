@@ -12,14 +12,8 @@ import java.util.List;
 public class ProductCategoryRepository extends DAO<ProductCategory> {
 
     private static final String GET_ALL_STATEMENT = "SELECT * FROM product_category";
-    private static final String DELETE_BY_CATEGORY_ID_STATEMENT = "DELETE FROM product_category WHERE category_id = ?";
+    private static final String DELETE_BY_CATEGORY_NAME_STATEMENT = "DELETE FROM product_category WHERE category_name = ?";
     private static final String INSERT_STATEMENT = "INSERT INTO product_category (category_name) VALUES (?)";
-
-    public boolean delete(Connection connection, int categoryId) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_CATEGORY_ID_STATEMENT);
-        preparedStatement.setInt(1, categoryId);
-        return preparedStatement.executeUpdate() == 1;
-    }
 
     @Override
     public boolean insert(Connection connection, ProductCategory productCategory) throws SQLException {
@@ -43,6 +37,11 @@ public class ProductCategoryRepository extends DAO<ProductCategory> {
         return false;
     }
 
+    public boolean delete(Connection connection, String categoryName) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_CATEGORY_NAME_STATEMENT);
+        preparedStatement.setString(1, categoryName);
+        return preparedStatement.executeUpdate() == 1;
+    }
     @Override
     public List<ProductCategory> getAll(Connection connection) throws SQLException {
         List<ProductCategory> categoryList = new ArrayList<>();

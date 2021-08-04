@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @WebServlet("/admin/adminPage")
 public class AdminPageServlet extends HttpServlet {
@@ -16,6 +17,7 @@ public class AdminPageServlet extends HttpServlet {
     private static final String ADMIN_PAGE_JSP = "/admin/adminPage.jsp";
     private static final ProductSearchService productSearchService = new ProductSearchService();
     private static final CustomerService customerService = new CustomerService();
+    private static final Logger logger = Logger.getLogger(AdminPageServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,8 +30,7 @@ public class AdminPageServlet extends HttpServlet {
         System.out.println(adminAction);
         switch (adminAction) {
             case "Manage categories and products":
-                req.setAttribute("categories", productSearchService.getProductCategories());
-                req.setAttribute("products", productSearchService.getAllProducts());
+                req.setAttribute("categoryProductsMap", productSearchService.getCategoryWithProductsMap());
                 break;
             case "Block customer":
                 req.setAttribute("customers", customerService.getAll());

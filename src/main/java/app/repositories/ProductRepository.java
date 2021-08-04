@@ -14,10 +14,10 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class ProductRepository extends DAO<Product> {
 
-    private static final String GET_PRODUCT_BY_CATEGORY_NAME_STATEMENT = "SELECT * FROM products WHERE product_category_id = (SELECT category_id FROM product_category WHERE category_name = ?)";
     private static final String GET_ALL_STATEMENT = "SELECT * FROM products";
-    private static final String GET_PRODUCTS_BY_NAME_PREFIX = "SELECT * FROM products WHERE product_name LIKE (?)";
-    public static final String BASE_SEARCH_QUERY = "select products.*, product_category.category_name from products join product_category on products.product_category_id = product_category.category_id";
+    private static final String BASE_SEARCH_QUERY = "select products.*, product_category.category_name from products join product_category on products.product_category_id = product_category.category_id";
+    private static final String DELETE_FROM_PRODUCTS_BY_ID_STATEMENT = "DELETE from products WHERE product_id = ?";
+    private static final String GET_BY_CATEGORY_ID = "SELECT * FROM products WHERE product_category_id = ?";
 
     @Override
     public boolean insert(Connection connection, Product objectToInsert) throws SQLException {
@@ -39,34 +39,27 @@ public class ProductRepository extends DAO<Product> {
         return false;
     }
 
+    public boolean deleteById(Connection connection, int productId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_FROM_PRODUCTS_BY_ID_STATEMENT);
+        preparedStatement.setInt(1, productId);
+        return preparedStatement.executeUpdate() == 1;
+    }
+    public List<Product> getProductsByCategoryId(Connection connection, int productCategoryId) throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_CATEGORY_ID);
+        preparedStatement.setInt(1, productCategoryId);
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                productList.add(mapProduct(resultSet));
+            }
+        }
+        return productList;
+    }
+
     @Override
     public List<Product> getAll(Connection connection) throws SQLException {
         List<Product> productList = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_STATEMENT);
-        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                productList.add(mapProduct(resultSet));
-            }
-        }
-        return productList;
-    }
-
-    public List<Product> getByCategoryName(Connection connection, String chosenCategoryName) throws SQLException {
-        List<Product> productList = new ArrayList<>();
-        PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_CATEGORY_NAME_STATEMENT);
-        preparedStatement.setString(1, chosenCategoryName);
-        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                productList.add(mapProduct(resultSet));
-            }
-        }
-        return productList;
-    }
-
-    public List<Product> getByNamePrefix(Connection connection, String productNamePrefix) throws SQLException {
-        List<Product> productList = new ArrayList<>();
-        PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCTS_BY_NAME_PREFIX);
-        preparedStatement.setString(1, "%" + productNamePrefix + "%");
         try (ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 productList.add(mapProduct(resultSet));

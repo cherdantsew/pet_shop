@@ -11,11 +11,11 @@ import java.util.Map;
 
 public class CustomerRepository extends DAO<Customer> {
 
-    public static final String INSERT_STATEMENT = "INSERT INTO customers (login, password, name, age) VALUES (?, ?, ?, ?)";
-    public static final String UPDATE_STATEMENT = "UPDATE customers SET login = ?, password = ?, name = ?, age = ? WHERE customer_id = ?";
-    public static final String GET_BY_ID_STATEMENT = "SELECT * FROM customers WHERE customer_id = ?";
-    public static final String DELETE_CUSTOMER_BY_ID_STATEMENT = "DELETE FROM customers WHERE customer_id = ?";
-    public static final String SELECT_ALL_FROM_CUSTOMERS_STATEMENT = "SELECT * FROM customers";
+    private static final String INSERT_STATEMENT = "INSERT INTO customers (login, password, name, age) VALUES (?, ?, ?, ?)";
+    private static final String UPDATE_STATEMENT = "UPDATE customers SET login = ?, password = ?, name = ?, age = ? WHERE customer_id = ?";
+    private static final String GET_BY_ID_STATEMENT = "SELECT * FROM customers WHERE customer_id = ?";
+    private static final String DELETE_CUSTOMER_BY_ID_STATEMENT = "DELETE FROM customers WHERE customer_id = ?";
+    private static final String SELECT_ALL_FROM_CUSTOMERS_STATEMENT = "SELECT * FROM customers";
     private static final String SELECT_BY_LOGIN_STATEMENT = "SELECT * FROM customers WHERE login = ?";
     private static final String GET_CUSTOMER_BUCKET_STATEMENT = "SELECT products.*, count(products.product_id) AS products_amount " +
                                                                 "FROM orders " +
