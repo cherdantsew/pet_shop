@@ -14,6 +14,7 @@ public class ProductCategoryRepository extends DAO<ProductCategory> {
     private static final String GET_ALL_STATEMENT = "SELECT * FROM product_category";
     private static final String DELETE_BY_CATEGORY_NAME_STATEMENT = "DELETE FROM product_category WHERE category_name = ?";
     private static final String INSERT_STATEMENT = "INSERT INTO product_category (category_name) VALUES (?)";
+    public static final String GET_CATEGORY_BY_NAME_STATEMENT = "SELECT * FROM product_category WHERE category_name = ?";
 
     @Override
     public boolean insert(Connection connection, ProductCategory productCategory) throws SQLException {
@@ -29,6 +30,17 @@ public class ProductCategoryRepository extends DAO<ProductCategory> {
 
     @Override
     public ProductCategory getById(Connection connection, int id) {
+        return null;
+    }
+
+    public ProductCategory getByName(Connection connection, String categoryName) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_CATEGORY_BY_NAME_STATEMENT);
+        preparedStatement.setString(1, categoryName);
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                return mapProductCategory(resultSet);
+            }
+        }
         return null;
     }
 

@@ -8,4 +8,8 @@ import lombok.Data;
 public class ProductCategory {
     private int categoryId;
     private String categoryName;
+
+    public ProductCategory(String newCategoryName) {
+        this.categoryName = newCategoryName;
+    }
 }

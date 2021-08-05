@@ -18,10 +18,16 @@ public class ProductRepository extends DAO<Product> {
     private static final String BASE_SEARCH_QUERY = "select products.*, product_category.category_name from products join product_category on products.product_category_id = product_category.category_id";
     private static final String DELETE_FROM_PRODUCTS_BY_ID_STATEMENT = "DELETE from products WHERE product_id = ?";
     private static final String GET_BY_CATEGORY_ID = "SELECT * FROM products WHERE product_category_id = ?";
+    public static final String INSERT_INTO_PRODUCTS_STATEMENT = "INSERT INTO products (product_name, product_price, product_description, product_category_id) VALUES (?,?,?,?)";
 
     @Override
-    public boolean insert(Connection connection, Product objectToInsert) throws SQLException {
-        return false;
+    public boolean insert(Connection connection, Product product) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO_PRODUCTS_STATEMENT);
+        preparedStatement.setString(1, product.getProductName());
+        preparedStatement.setString(2, product.getProductPrice());
+        preparedStatement.setString(3, product.getProductDescription());
+        preparedStatement.setInt(4, Integer.parseInt(product.getProductCategory()));
+        return preparedStatement.executeUpdate() == 1;
     }
 
     @Override
@@ -44,6 +50,7 @@ public class ProductRepository extends DAO<Product> {
         preparedStatement.setInt(1, productId);
         return preparedStatement.executeUpdate() == 1;
     }
+
     public List<Product> getProductsByCategoryId(Connection connection, int productCategoryId) throws SQLException {
         List<Product> productList = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_CATEGORY_ID);
@@ -116,6 +123,18 @@ public class ProductRepository extends DAO<Product> {
                 resultSet.getString("product_name"),
                 resultSet.getString("product_price"),
                 resultSet.getString("product_description"));
+    }
+
+    public Product getByNameAndCategoryId(Connection connection, String productName, int categoryId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM products WHERE product_name = ? AND product_category_id = ?");
+        preparedStatement.setString(1, productName);
+        preparedStatement.setInt(2, categoryId);
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                return mapProduct(resultSet);
+            }
+        }
+        return null;
     }
 }
 
