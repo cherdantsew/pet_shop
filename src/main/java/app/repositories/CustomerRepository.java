@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class CustomerRepository extends DAO<Customer> {
 
-    private static final String INSERT_STATEMENT = "INSERT INTO customers (login, password, name, age) VALUES (?, ?, ?, ?)";
-    private static final String UPDATE_STATEMENT = "UPDATE customers SET login = ?, password = ?, name = ?, age = ? WHERE customer_id = ?";
+    private static final String INSERT_STATEMENT = "INSERT INTO customers (login, password, name, age, isBlocked, type) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_STATEMENT = "UPDATE customers SET login = ?, password = ?, name = ?, age = ?, isBlocked = ?, type = ? WHERE customer_id = ?";
     private static final String GET_BY_ID_STATEMENT = "SELECT * FROM customers WHERE customer_id = ?";
     private static final String DELETE_CUSTOMER_BY_ID_STATEMENT = "DELETE FROM customers WHERE customer_id = ?";
     private static final String SELECT_ALL_FROM_CUSTOMERS_STATEMENT = "SELECT * FROM customers";
@@ -53,6 +53,8 @@ public class CustomerRepository extends DAO<Customer> {
         preparedStatement.setString(2, customer.getPassword());
         preparedStatement.setString(3, customer.getName());
         preparedStatement.setInt(4, customer.getAge());
+        preparedStatement.setString(5, customer.getIsBlocked());
+        preparedStatement.setString(6, customer.getType());
         return preparedStatement.executeUpdate() == 1;
     }
 
@@ -63,7 +65,9 @@ public class CustomerRepository extends DAO<Customer> {
         preparedStatement.setString(2, customer.getPassword());
         preparedStatement.setString(3, customer.getName());
         preparedStatement.setInt(4, customer.getAge());
-        preparedStatement.setInt(5, customer.getId());
+        preparedStatement.setString(5, customer.getIsBlocked());
+        preparedStatement.setString(6, customer.getType());
+        preparedStatement.setInt(7, customer.getId());
         return preparedStatement.executeUpdate() == 1;
     }
 
@@ -110,13 +114,6 @@ public class CustomerRepository extends DAO<Customer> {
     }
 
     private Customer mapCustomer(ResultSet resultSet) throws SQLException {
-        return new Customer(resultSet.getInt("customer_id"), resultSet.getString("login"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getInt("age"), resultSet.getString("isBlocked"));
-    }
-
-    public Boolean changeStatus(Connection connection, int customerId, char status) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE customers SET isBlocked = ? WHERE customer_id = ?");
-        preparedStatement.setString(1, String.valueOf(status));
-        preparedStatement.setInt(2, customerId);
-        return preparedStatement.executeUpdate() == 1;
+        return new Customer(resultSet.getInt("customer_id"), resultSet.getString("login"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getInt("age"), resultSet.getString("isBlocked"), resultSet.getNString("type"));
     }
 }

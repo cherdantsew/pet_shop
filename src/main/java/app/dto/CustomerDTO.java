@@ -9,4 +9,5 @@ public class CustomerDTO {
     private Integer id;
     private String name;
     private String isBlocked;
+    private String type;
 }

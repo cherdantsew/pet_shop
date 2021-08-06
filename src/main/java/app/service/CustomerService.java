@@ -29,12 +29,29 @@ public class CustomerService {
             Customer customer = customerRepository.getById(connection, Integer.valueOf(customerId));
             if (customer != null) {
                 Character status = "Y".equals(customer.getIsBlocked()) ? 'N' : 'Y';
-                return customerRepository.changeStatus(connection, customer.getId(), status);
-            } else throw new ValidationException("Cant block customer - already blocked or doesnt exist");
+                customer.setIsBlocked(String.valueOf(status));
+                return customerRepository.update(connection, customer);
+            } else throw new ValidationException("Cant block customer - doesnt exist");
         });
         try {
             return transactionHandler.execute();
         } catch (SQLException e) {
+            throw new TransactionExecutionException(e);
+        }
+    }
+
+    public boolean changeCustomerType(String customerId) {
+        TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>(connection -> {
+            Customer customer = customerRepository.getById(connection, Integer.valueOf(customerId));
+            if (customer != null) {
+                String type = "CUSTOMER".equals(customer.getType()) ? "ADMIN" : "CUSTOMER";
+                customer.setType(type);
+                return customerRepository.update(connection, customer);
+            } else throw new ValidationException("Cant update customer type - customer doesnt exist");
+        });
+        try{
+            return transactionHandler.execute();
+        } catch (SQLException e){
             throw new TransactionExecutionException(e);
         }
     }

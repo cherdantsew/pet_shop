@@ -12,7 +12,6 @@
 <body>
 
 <h3>Go to <a href="${pageContext.request.contextPath}/customer/bucket">bucket.</a></h3>
-
 <h3><a href="${pageContext.request.contextPath}/customer/logout">Logout.</a></h3>
 
 <form method="get" action="${pageContext.request.contextPath}/customer/homepage/products/search">

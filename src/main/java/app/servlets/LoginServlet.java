@@ -32,8 +32,13 @@ public class LoginServlet extends HttpServlet {
         try {
             CustomerDTO customerDto = loginService.doLogin(login, password);
             if (customerDto != null) {
-                req.getSession().setAttribute("customer", customerDto);
-                resp.sendRedirect(req.getContextPath() + "/customer/homepage");
+                if (!"Y".equals(customerDto.getIsBlocked()) && "ADMIN".equals(customerDto.getType())){
+                    req.getSession().setAttribute("customer", customerDto);
+                    resp.sendRedirect(req.getContextPath() + "/admin/adminPage");
+                } else if (!"Y".equals(customerDto.getIsBlocked()) && "CUSTOMER".equals(customerDto.getType())){
+                    req.getSession().setAttribute("customer", customerDto);
+                    resp.sendRedirect(req.getContextPath() + "/customer/homepage");
+                }
             }
         } catch (BadCredentialsException e) {
             logger.log(Level.WARNING, "Bad credentials while logging in. ");

@@ -1,5 +1,6 @@
 package app.filters;
 
+import app.dto.CustomerDTO;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -7,23 +8,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("/customer/*")
-public class LoginFilter implements Filter {
+@WebFilter("/admin/*")
+public class AdminLoginFilter implements Filter {
+
     @Override
-    public void init(FilterConfig filterConfig) {
+    public void init(FilterConfig filterConfig) throws ServletException {
 
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        Object logged = httpServletRequest.getSession().getAttribute("customer");
-        if (logged == null){
+        CustomerDTO customerDTO = (CustomerDTO) httpServletRequest.getSession().getAttribute("customer");
+        if ("ADMIN".equals(customerDTO.getType())){
+            chain.doFilter(request, response);
+        } else {
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login");
-        } else {
-            chain.doFilter(request, response);
         }
+
     }
 
     @Override

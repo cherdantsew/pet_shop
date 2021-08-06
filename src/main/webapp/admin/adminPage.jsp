@@ -7,10 +7,11 @@
 </head>
 <body>
 <h3>Choose what to do</h3>
+Check out <a href="${pageContext.request.contextPath}/customer/homepage">home page</a>
 <form method="post" onchange="this.submit()" action="${pageContext.request.contextPath}/admin/adminPage">
     <select size="2" name="adminAction">
         <option>Manage categories and products</option>
-        <option>Block customer</option>
+        <option>Manage customers</option>
     </select>
 </form>
 
@@ -69,10 +70,11 @@
 
 <c:if test="${requestScope.customers != null}">
     Block or unblock customers:
-    <form method="post" action="${pageContext.request.contextPath}/admin/blockCustomer">
+    <form method="post" action="${pageContext.request.contextPath}/admin/manageCustomer">
         <c:forEach var="customer" items="${requestScope.customers}">
-            <h3>Id: ${customer.id} Name: ${customer.name} Status: ${customer.isBlocked}
-                <button type="submit" value="${customer.id}" name="customerIdToBlock">Change status</button>
+            <h3>Id: ${customer.id} Name: ${customer.name} Status: ${customer.isBlocked} Type: ${customer.type}
+                <button type="submit" value="${customer.id}" name="customerIdToBlock">Change customer status</button>
+                <button type="submit" value="${customer.id}" name="customerIdToAdmin">Change customer type</button>
             </h3>
         </c:forEach>
     </form>

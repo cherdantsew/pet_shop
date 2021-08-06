@@ -31,7 +31,7 @@ public class AdminPageServlet extends HttpServlet {
             case "Manage categories and products":
                 req.setAttribute("categoryProductsMap", productSearchService.getCategoryWithProductsMap());
                 break;
-            case "Block customer":
+            case "Manage customers":
                 req.setAttribute("customers", customerService.getAll());
                 break;
         }
