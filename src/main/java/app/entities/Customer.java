@@ -14,5 +14,5 @@ public class Customer {
     private String password;
     private String name;
     private int age;
-
+    private String isBlocked;
 }

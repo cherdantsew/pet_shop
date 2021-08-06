@@ -93,6 +93,6 @@ public class ProductAndCategoryManageService {
             errorList.add("Name is either blank or null");
         if (StringUtils.isEmpty(product.getProductDescription()))
             errorList.add("Description is empty");
-        return CollectionUtils.isNotEmpty(errorList);
+        return CollectionUtils.isEmpty(errorList);
     }
 }

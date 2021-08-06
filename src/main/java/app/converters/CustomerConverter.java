@@ -12,6 +12,7 @@ public class CustomerConverter {
         return CustomerDTO.builder()
                 .id(customer.getId())
                 .name(customer.getName())
+                .isBlocked(customer.getIsBlocked())
                 .build();
     }
     public List<CustomerDTO> toCustomerDTOList(List<Customer> customerList){

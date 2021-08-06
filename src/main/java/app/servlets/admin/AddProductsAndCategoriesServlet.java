@@ -21,12 +21,14 @@ public class AddProductsAndCategoriesServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try{
-            addNewCategory(req);
-            addNewProduct(req);
-        } catch (CategoryValidationException e){
+        try {
+            if (req.getParameter("newCategoryName") != null)
+                addNewCategory(req);
+            if (req.getParameter("newProductName") != null)
+                addNewProduct(req);
+        } catch (CategoryValidationException e) {
             req.setAttribute("categoryAlreadyExists", true);
-        } catch (ProductValidationException e){
+        } catch (ProductValidationException e) {
             req.setAttribute("productAlreadyExists", true);
         }
 

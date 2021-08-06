@@ -18,12 +18,12 @@ public class CustomerRepository extends DAO<Customer> {
     private static final String SELECT_ALL_FROM_CUSTOMERS_STATEMENT = "SELECT * FROM customers";
     private static final String SELECT_BY_LOGIN_STATEMENT = "SELECT * FROM customers WHERE login = ?";
     private static final String GET_CUSTOMER_BUCKET_STATEMENT = "SELECT products.*, count(products.product_id) AS products_amount " +
-                                                                "FROM orders " +
-                                                                "JOIN products " +
-                                                                "ON orders.product_id = products.product_id " +
-                                                                "WHERE orders.status != 'COMPLETED'" +
-                                                                "AND orders.customer_id = ? " +
-                                                                "GROUP BY products.product_id;";
+            "FROM orders " +
+            "JOIN products " +
+            "ON orders.product_id = products.product_id " +
+            "WHERE orders.status != 'COMPLETED'" +
+            "AND orders.customer_id = ? " +
+            "GROUP BY products.product_id;";
 
     public Map<Integer, Product> getBucketProductsByCustomerId(Connection connection, int customer_id) throws SQLException {
         Map<Integer, Product> bucketProductsMap = new HashMap<>();
@@ -110,6 +110,13 @@ public class CustomerRepository extends DAO<Customer> {
     }
 
     private Customer mapCustomer(ResultSet resultSet) throws SQLException {
-        return new Customer(resultSet.getInt("customer_id"), resultSet.getString("login"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getInt("age"));
+        return new Customer(resultSet.getInt("customer_id"), resultSet.getString("login"), resultSet.getString("password"), resultSet.getString("name"), resultSet.getInt("age"), resultSet.getString("isBlocked"));
+    }
+
+    public Boolean changeStatus(Connection connection, int customerId, char status) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE customers SET isBlocked = ? WHERE customer_id = ?");
+        preparedStatement.setString(1, String.valueOf(status));
+        preparedStatement.setInt(2, customerId);
+        return preparedStatement.executeUpdate() == 1;
     }
 }

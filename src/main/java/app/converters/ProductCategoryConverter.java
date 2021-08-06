@@ -1,8 +1,6 @@
 package app.converters;
 
 import app.dto.ProductCategoryDTO;
-import app.dto.ProductDTO;
-import app.entities.Product;
 import app.entities.ProductCategory;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -12,6 +10,7 @@ import java.util.List;
 public class ProductCategoryConverter {
     private ProductCategoryDTO toDTO (ProductCategory productCategory){
         return ProductCategoryDTO.builder()
+                .categoryId(productCategory.getCategoryId())
                 .categoryName(productCategory.getCategoryName())
                 .build();
     }

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/admin/deleteProductsAndCategories")
-public class DeleteProductsAndCategoriesManageServlet extends HttpServlet {
+public class DeleteProductsAndCategoriesServlet extends HttpServlet {
     private static final ProductAndCategoryManageService productAndCategoryManageService = new ProductAndCategoryManageService();
     private static final String ADMIN_PAGE_JSP = "/admin/adminPage.jsp";
     private static final ProductSearchService productSearchService = new ProductSearchService();

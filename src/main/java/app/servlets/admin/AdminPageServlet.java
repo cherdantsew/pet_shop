@@ -27,7 +27,6 @@ public class AdminPageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String adminAction = req.getParameter("adminAction");
-        System.out.println(adminAction);
         switch (adminAction) {
             case "Manage categories and products":
                 req.setAttribute("categoryProductsMap", productSearchService.getCategoryWithProductsMap());
