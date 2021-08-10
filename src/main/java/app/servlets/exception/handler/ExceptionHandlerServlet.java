@@ -1,4 +1,4 @@
-package app.servlets.exceptionHandler;
+package app.servlets.exception.handler;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +13,7 @@ import static javax.servlet.RequestDispatcher.ERROR_EXCEPTION;
 @WebServlet("/exceptionHandler")
 public class ExceptionHandlerServlet extends HttpServlet {
     public static final String EXCEPTION_HANDLER_EXCEPTION_INFO_JSP = "/exceptionHandler/exceptionInfo.jsp";
-    Logger logger = Logger.getLogger(ExceptionHandlerServlet.class.getName());
+    private static final Logger logger = Logger.getLogger(ExceptionHandlerServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

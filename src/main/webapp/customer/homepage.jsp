@@ -21,7 +21,7 @@
         </c:forEach>
     </select>
     <h5>Search products by name</h5>
-    <input type="text" name="productNamePrefix" value="Type product name here">
+    <input type="text" name="productNamePrefix">
     <button type="submit">Search</button>
 </form>
 

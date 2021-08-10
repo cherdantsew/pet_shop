@@ -22,22 +22,22 @@ public class OrderRepository extends DAO<Order> {
     }
 
     @Override
-    public boolean update(Connection connection, Order objectToUpdate) throws SQLException {
+    public boolean update(Connection connection, Order objectToUpdate) {
         return false;
     }
 
     @Override
-    public Order getById(Connection connection, int id) throws SQLException {
+    public Order getById(Connection connection, int id) {
         return null;
     }
 
     @Override
-    public boolean delete(Connection connection, Order objectToDelete) throws SQLException {
+    public boolean delete(Connection connection, Order objectToDelete) {
         return false;
     }
 
     @Override
-    public List<Order> getAll(Connection connection) throws SQLException {
+    public List<Order> getAll(Connection connection) {
         return null;
     }
 }

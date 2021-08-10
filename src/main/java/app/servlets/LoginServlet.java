@@ -1,6 +1,7 @@
 package app.servlets;
 
 import app.dto.CustomerDTO;
+import app.entities.Customer;
 import app.exceptions.BadCredentialsException;
 import app.service.LoginService;
 
@@ -17,6 +18,8 @@ import java.util.logging.Logger;
 public class LoginServlet extends HttpServlet {
 
     public static final String LOGIN_JSP = "login.jsp";
+    public static final String ADMIN_MAIN_PAGE = "/admin/main";
+    public static final String CUSTOMER_HOMEPAGE = "/customer/homepage";
     private final LoginService loginService = new LoginService();
     private final Logger logger = Logger.getLogger(LoginServlet.class.getName());
 
@@ -32,12 +35,12 @@ public class LoginServlet extends HttpServlet {
         try {
             CustomerDTO customerDto = loginService.doLogin(login, password);
             if (customerDto != null) {
-                if (!"Y".equals(customerDto.getIsBlocked()) && "ADMIN".equals(customerDto.getType())){
+                if (!Customer.TYPE_BLOCKED.equals(customerDto.getIsBlocked()) && Customer.ROLE_ADMIN.equals(customerDto.getType())){
                     req.getSession().setAttribute("customer", customerDto);
-                    resp.sendRedirect(req.getContextPath() + "/admin/adminPage");
-                } else if (!"Y".equals(customerDto.getIsBlocked()) && "CUSTOMER".equals(customerDto.getType())){
+                    resp.sendRedirect(req.getContextPath() + ADMIN_MAIN_PAGE);
+                } else if (!Customer.TYPE_BLOCKED.equals(customerDto.getIsBlocked()) && Customer.ROLE_CUSTOMER.equals(customerDto.getType())){
                     req.getSession().setAttribute("customer", customerDto);
-                    resp.sendRedirect(req.getContextPath() + "/customer/homepage");
+                    resp.sendRedirect(req.getContextPath() + CUSTOMER_HOMEPAGE);
                 }
             }
         } catch (BadCredentialsException e) {

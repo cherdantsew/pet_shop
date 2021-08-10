@@ -1,6 +1,7 @@
 package app.filters;
 
 import app.dto.CustomerDTO;
+import app.entities.Customer;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -12,7 +13,7 @@ import java.io.IOException;
 public class AdminLoginFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
@@ -20,13 +21,12 @@ public class AdminLoginFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         CustomerDTO customerDTO = (CustomerDTO) httpServletRequest.getSession().getAttribute("customer");
-        if ("ADMIN".equals(customerDTO.getType())){
+        if (Customer.ROLE_ADMIN.equals(customerDTO.getType())){
             chain.doFilter(request, response);
         } else {
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login");
         }
-
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductCategoryRepository extends DAO<ProductCategory> {
 
     private static final String GET_ALL_STATEMENT = "SELECT * FROM product_category";
-    private static final String DELETE_BY_CATEGORY_NAME_STATEMENT = "DELETE FROM product_category WHERE category_name = ?";
+    private static final String DELETE_BY_CATEGORY_ID_STATEMENT = "DELETE FROM product_category WHERE category_id = ?";
     private static final String INSERT_STATEMENT = "INSERT INTO product_category (category_name) VALUES (?)";
     public static final String GET_CATEGORY_BY_NAME_STATEMENT = "SELECT * FROM product_category WHERE category_name = ?";
 
@@ -49,9 +49,9 @@ public class ProductCategoryRepository extends DAO<ProductCategory> {
         return false;
     }
 
-    public boolean delete(Connection connection, String categoryName) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_CATEGORY_NAME_STATEMENT);
-        preparedStatement.setString(1, categoryName);
+    public boolean delete(Connection connection, String categoryId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_CATEGORY_ID_STATEMENT);
+        preparedStatement.setString(1, categoryId);
         return preparedStatement.executeUpdate() == 1;
     }
     @Override

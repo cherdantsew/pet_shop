@@ -1,8 +1,9 @@
 package app.service;
 
 import app.entities.Product;
-import app.entities.ProductCategory;
-import app.exceptions.*;
+import app.exceptions.CategoryValidationException;
+import app.exceptions.ProductValidationException;
+import app.exceptions.TransactionExecutionException;
 import app.repositories.ProductCategoryRepository;
 import app.repositories.ProductRepository;
 import app.repositories.TransactionHandler;
@@ -13,42 +14,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductAndCategoryManageService {
+public class ProductService {
     private static final ProductRepository productRepository = new ProductRepository();
     private static final ProductCategoryRepository productCategoryRepository = new ProductCategoryRepository();
-    private static final ProductSearchService productSearchService = new ProductSearchService();
 
-    public boolean deleteCategory(String categoryNameToDelete) {
-        TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>(connection -> {
-            if (CollectionUtils.isNotEmpty(productSearchService.search(categoryNameToDelete, null))) {
-                return false;
-            }
-            return productCategoryRepository.delete(connection, categoryNameToDelete);
-        });
-        try {
-            return transactionHandler.execute();
-        } catch (SQLException e) {
-            throw new TransactionExecutionException(e);
-        }
-    }
-
-    public boolean deleteProduct(Integer productIdToDelete) {
+    public boolean removeProduct(Integer productIdToDelete) {
         TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>(connection -> productRepository.deleteById(connection, productIdToDelete));
-        try {
-            return transactionHandler.execute();
-        } catch (SQLException e) {
-            throw new TransactionExecutionException(e);
-        }
-    }
-
-    public boolean addCategory(String newCategoryName) {
-        TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>(connection -> {
-            if (productCategoryRepository.getByName(connection, newCategoryName) != null) {
-                throw new CategoryValidationException("Unable to add new category. Category with that name already exists.");
-            }
-            ProductCategory productCategory = new ProductCategory(newCategoryName);
-            return productCategoryRepository.insert(connection, productCategory);
-        });
         try {
             return transactionHandler.execute();
         } catch (SQLException e) {

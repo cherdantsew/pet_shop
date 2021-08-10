@@ -8,6 +8,12 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class Customer {
+
+    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_CUSTOMER = "CUSTOMER";
+    public static final String TYPE_BLOCKED = "Y";
+    public static final String TYPE_UNBLOCKED = "N";
+
     private int id;
     private String login;
     private String password;

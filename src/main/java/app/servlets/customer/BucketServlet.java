@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class BucketServlet extends HttpServlet {
 
     private final Logger logger = Logger.getLogger(BucketServlet.class.getName());
-    BucketService bucketService = new BucketService();
+    final BucketService bucketService = new BucketService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

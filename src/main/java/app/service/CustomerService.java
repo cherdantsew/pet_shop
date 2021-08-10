@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CustomerService {
+
     private static final CustomerRepository customerRepository = new CustomerRepository();
     private static final CustomerConverter customerConverter = new CustomerConverter();
 
@@ -26,12 +27,13 @@ public class CustomerService {
 
     public boolean changeCustomerStatus(String customerId) {
         TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>(connection -> {
-            Customer customer = customerRepository.getById(connection, Integer.valueOf(customerId));
+            Customer customer = customerRepository.getById(connection, Integer.parseInt(customerId));
             if (customer != null) {
                 Character status = "Y".equals(customer.getIsBlocked()) ? 'N' : 'Y';
                 customer.setIsBlocked(String.valueOf(status));
                 return customerRepository.update(connection, customer);
-            } else throw new ValidationException("Cant block customer - doesnt exist");
+            }
+            throw new ValidationException("Cant block customer - doesnt exist");
         });
         try {
             return transactionHandler.execute();
@@ -42,16 +44,17 @@ public class CustomerService {
 
     public boolean changeCustomerType(String customerId) {
         TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>(connection -> {
-            Customer customer = customerRepository.getById(connection, Integer.valueOf(customerId));
+            Customer customer = customerRepository.getById(connection, Integer.parseInt(customerId));
             if (customer != null) {
                 String type = "CUSTOMER".equals(customer.getType()) ? "ADMIN" : "CUSTOMER";
                 customer.setType(type);
                 return customerRepository.update(connection, customer);
-            } else throw new ValidationException("Cant update customer type - customer doesnt exist");
+            }
+            throw new ValidationException("Can't update customer type - customer doesnt exist");
         });
-        try{
+        try {
             return transactionHandler.execute();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new TransactionExecutionException(e);
         }
     }

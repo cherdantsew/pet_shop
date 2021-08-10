@@ -27,7 +27,7 @@ public class ProductsSearchServlet extends HttpServlet {
         try {
             String chosenCategoryName = req.getParameter("chosenCategoryName");
             String productNamePrefix = req.getParameter("productNamePrefix");
-            List<ProductDTO> productDTOList = productSearchService.search(chosenCategoryName, productNamePrefix);
+            List<ProductDTO> productDTOList = productSearchService.search(chosenCategoryName, productNamePrefix.equals("") ? null : productNamePrefix);
             req.setAttribute("products", productDTOList);
             req.setAttribute("categories", productSearchService.getProductCategories());
             req.getRequestDispatcher(HOMEPAGE_JSP).forward(req, resp);
