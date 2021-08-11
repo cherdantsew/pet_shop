@@ -21,7 +21,7 @@ public class CategoryRemoveServlet extends HttpServlet {
         try {
             String categoryIdToRemove = req.getParameter("categoryIdToRemove");
             if (categoryIdToRemove != null) {
-                boolean isCategoryDeleted = categoryService.removeCategory(categoryIdToRemove);
+                boolean isCategoryDeleted = categoryService.removeCategory(Integer.parseInt(categoryIdToRemove));
                 req.setAttribute("isCategoryDeleted", isCategoryDeleted);
             }
         } catch (ValidationException e){

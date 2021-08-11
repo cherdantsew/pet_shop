@@ -49,9 +49,9 @@ public class ProductCategoryRepository extends DAO<ProductCategory> {
         return false;
     }
 
-    public boolean delete(Connection connection, String categoryId) throws SQLException {
+    public boolean delete(Connection connection, int categoryId) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_CATEGORY_ID_STATEMENT);
-        preparedStatement.setString(1, categoryId);
+        preparedStatement.setInt(1, categoryId);
         return preparedStatement.executeUpdate() == 1;
     }
     @Override

@@ -17,7 +17,6 @@ public class ProductRepository extends DAO<Product> {
     private static final String GET_ALL_STATEMENT = "SELECT * FROM products";
     private static final String BASE_SEARCH_QUERY = "select products.*, product_category.category_name from products join product_category on products.product_category_id = product_category.category_id";
     private static final String DELETE_FROM_PRODUCTS_BY_ID_STATEMENT = "DELETE from products WHERE product_id = ?";
-    private static final String GET_BY_CATEGORY_ID = "SELECT * FROM products WHERE product_category_id = ?";
     public static final String INSERT_INTO_PRODUCTS_STATEMENT = "INSERT INTO products (product_name, product_price, product_description, product_category_id) VALUES (?,?,?,?)";
     public static final String SELECT_AMOUNT_OF_PRODUCTS_IN_CATEGORY_STATEMENT = "SELECT count(*) AS products_amount FROM products WHERE product_category_id = ?";
 

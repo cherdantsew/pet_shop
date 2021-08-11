@@ -20,7 +20,7 @@ public class LoginService {
 
     public CustomerDTO doLogin(String login, String password) {
         try {
-            TransactionHandler<Customer> transactionHandler = new TransactionHandler((connection) -> customerRepository.getByLogin(connection, login));
+            TransactionHandler<Customer> transactionHandler = new TransactionHandler<>((connection) -> customerRepository.getByLogin(connection, login));
             Customer customer = transactionHandler.execute();
             if (customer != null && password.equals(customer.getPassword())) {
                 return customerConverter.toDto(customer);

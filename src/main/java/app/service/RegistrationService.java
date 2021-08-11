@@ -37,7 +37,7 @@ public class RegistrationService {
     private void validate(Customer customer, Connection connection) throws SQLException {
         List<String> errors = new ArrayList<>();
         if (customer.getAge() < MIN_AGE) {
-            errors.add("Pizdukov ne registriryem");
+            errors.add("Customers under age 18 are not allowed.");
         }
         if (customerRepository.getByLogin(connection, customer.getLogin()) != null) {
             errors.add(String.format("Customer with login %s already exists", customer.getLogin()));

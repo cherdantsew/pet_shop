@@ -28,9 +28,9 @@ public class CategoryService {
         }
     }
 
-    public boolean removeCategory(String categoryId) {
+    public boolean removeCategory(int categoryId) {
         TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>(connection -> {
-            if (hasProducts(Integer.parseInt(categoryId))) {
+            if (hasProducts(categoryId)) {
                 throw new ValidationException(String.format("Please remove all products from category %s", categoryId));
             }
             return productCategoryRepository.delete(connection, categoryId);
