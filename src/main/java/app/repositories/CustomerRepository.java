@@ -53,8 +53,8 @@ public class CustomerRepository extends DAO<Customer> {
         preparedStatement.setString(2, customer.getPassword());
         preparedStatement.setString(3, customer.getName());
         preparedStatement.setInt(4, customer.getAge());
-        preparedStatement.setString(5, customer.getIsBlocked());
-        preparedStatement.setString(6, customer.getType());
+        preparedStatement.setString(5, Customer.TYPE_UNBLOCKED);
+        preparedStatement.setString(6, Customer.ROLE_CUSTOMER);
         return preparedStatement.executeUpdate() == 1;
     }
 
