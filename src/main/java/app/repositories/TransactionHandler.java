@@ -34,7 +34,7 @@ public class TransactionHandler<T> {
     private Connection getConnection() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            MysqlDataSource dataSource = null;
+            MysqlDataSource dataSource = new MysqlDataSource();
             dataSource.setUrl("mysql://s0qk0z4uwrnzkpzm:g91j65w8drr78av3@pei17y9c5bpuh987.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/ladcrjtpdtas3gwj");
             dataSource.setUser("s0qk0z4uwrnzkpzm");
             dataSource.setPassword("g91j65w8drr78av3");
