@@ -9,6 +9,7 @@ import app.exceptions.ValidationException;
 import app.repositories.ProductCategoryRepository;
 import app.repositories.ProductRepository;
 import app.repositories.TransactionHandler;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -44,7 +45,7 @@ public class CategoryService {
 
     public boolean addCategory(String newCategoryName) {
         TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>(connection -> {
-            if (productCategoryRepository.getByName(connection, newCategoryName) != null) {
+            if (productCategoryRepository.getByName(connection, newCategoryName) != null && StringUtils.isNotBlank(newCategoryName)) {
                 throw new CategoryValidationException("Unable to add new category. Category with that name already exists.");
             }
             ProductCategory productCategory = new ProductCategory(newCategoryName);
