@@ -20,6 +20,7 @@ public class RegistrationService {
 
     public boolean doRegistration(String login, String password, String name, Integer age) {
         try {
+            System.err.println("Come to doRegistration");;
             TransactionHandler<Boolean> transactionHandler = new TransactionHandler<>((connection) -> {
                 Customer customer = toCustomer(login, password, name, age);
                 validate(customer, connection);

@@ -55,6 +55,7 @@ public class CustomerRepository extends DAO<Customer> {
         preparedStatement.setInt(4, customer.getAge());
         preparedStatement.setString(5, Customer.TYPE_UNBLOCKED);
         preparedStatement.setString(6, Customer.ROLE_CUSTOMER);
+        System.err.println("come to insert");;
         return preparedStatement.executeUpdate() == 1;
     }
 
