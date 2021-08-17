@@ -2,11 +2,8 @@ package app.repositories;
 
 import app.exceptions.ConnectionInitializationException;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class TransactionHandler<T> {
@@ -36,11 +33,13 @@ public class TransactionHandler<T> {
 
     private Connection getConnection() {
         try {
-            Context initContext = new InitialContext();
-            Context envContext = (Context) initContext.lookup(JAVA_COMP_ENV);
-            DataSource dataSource = (DataSource) envContext.lookup(JDBC_JAVASHEMA);
-            return dataSource.getConnection();
-        } catch (SQLException | NamingException e) {
+            String dbUrl = System.getenv("JDBC_DATABASE_URL");
+            //Context initContext = new InitialContext();
+            //Context envContext = (Context) initContext.lookup(JAVA_COMP_ENV);
+            //DataSource dataSource = (DataSource) envContext.lookup(JDBC_JAVASHEMA);
+            //return dataSource.getConnection();
+            return DriverManager.getConnection(dbUrl);
+        } catch (SQLException e) {
             throw new ConnectionInitializationException(e);
         }
     }
