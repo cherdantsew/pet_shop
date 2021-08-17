@@ -43,7 +43,10 @@ public class TransactionHandler<T> {
             String password = jdbUri.getUserInfo().split(":")[1];
             String port = String.valueOf(jdbUri.getPort());
             String jdbUrl = "jdbc:mysql://" + jdbUri.getHost() + ":" + port + jdbUri.getPath();
-
+            System.out.println(username);
+            System.out.println(password);
+            System.out.println(port);
+            System.out.println(jdbUrl);
             return DriverManager.getConnection(jdbUrl, username, password);
             //Class.forName("com.mysql.cj.jdbc.Driver");
             //MysqlDataSource dataSource = new MysqlDataSource();
