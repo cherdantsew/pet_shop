@@ -39,7 +39,7 @@ public class TransactionHandler<T> {
             Context envContext = (Context) initContext.lookup(JAVA_COMP_ENV);
             DataSource dataSource = (DataSource) envContext.lookup(JDBC_JAVASHEMA);
             return dataSource.getConnection();
-        } catch (SQLException | NamingException e) {
+        } catch (SQLException | NamingException e) {//
             throw new ConnectionInitializationException(e);
         }
     }
